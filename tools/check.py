@@ -57,6 +57,12 @@ for i in ids:
         if f.endswith(".cho") and os.path.normpath(os.path.join(sd, f)) not in listed:
             warnings.append(f"tunas/{i}/songs/{f} exists but is not listed in tuna.json")
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import parts_index
+sys.argv.append("--check")
+stale, badnames = parts_index.main()
+errors += stale; warnings += badnames
+
 for w in warnings: print("warning:", w)
 for e in errors: print("error:", e)
 print(f"{len(ids)} tunas checked, {len(errors)} errors, {len(warnings)} warnings")

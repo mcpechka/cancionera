@@ -12,13 +12,15 @@ The site (`index.html`) is a single static page. It reads `tunas/index.json`, ea
 tunas/
   index.json            which tuna folders the site loads
   _plantilla/           template to copy for a new tuna
-  ciudad-de-luz/        Tuna Ciudad de Luz, 52 songs
+  ciudad-de-luz/        Tuna Ciudad de Luz, 52 songs with chords, sheet music for 85 songs
     tuna.json  historia.md  songs/  parts/  photos/
   maastricht/  medicina-navarra/  empresariales-huelva/  uaa/   reserved, still empty
 tools/
   tex2cho.py            converts the Tunabundel LaTeX songs to ChordPro
   check.py              checks the tunas/ folder (runs on every push and pull request)
+  parts_index.py        rebuilds each tuna's parts/index.json
 docs/CANCIONERO.md      system overview, formats, known issues, roadmap
+docs/parts_inventory.csv  every sheet, MIDI and recording in the Ciudad de Luz archive
 ```
 
 ## Add your tuna

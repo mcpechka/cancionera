@@ -34,4 +34,8 @@ parts/fonseca/laud-tab.pdf
 parts/clavelitos/voz-melodia.ly
 ```
 
-Instruments: `voz`, `bandurria`, `laud`, `guitarra`, `guitarron`, `contrabajo`, `cuatro`, `pandereta`, `percusion`. Preferred digital format is MusicXML (`.musicxml`); scans (`.jpg`, `.pdf`), LilyPond (`.ly`), Guitar Pro (`.gp5`) and MIDI (`.mid`) are all welcome as originals.
+Instruments: `voz`, `bandurria` (or `bandurria1`, `bandurria2`, `bandurria3` for a single voice), `laud`, `guitarra`, `guitarron`, `bajo`, `contrabajo`, `cuatro`, `acordeon`, `trompeta`, `pandereta`, `percusion`, and `todos` for a full score. What: `partitura`, `melodia`, `letra`, `tab`, `midi`, `musescore`, `scan`; add `-2`, `-3` when there is more than one (`laud-partitura-2.pdf`). Preferred digital format is MusicXML (`.musicxml`); scans (`.jpg`, `.pdf`), LilyPond (`.ly`), MuseScore (`.mscz`), Guitar Pro (`.gp5`) and MIDI (`.mid`) are all welcome as originals.
+
+The site can't list folders, so it reads `parts/index.json` (folder → song title and files). After adding or removing files, run `python3 tools/parts_index.py`; `tools/check.py` fails while the index is out of date. A folder with the same name as a file in `songs/` is shown on that song's page; any other folder shows up as a song with sheet music but no chords yet, under the title in the index.
+
+Audio and video don't go in the repository (too big for git). Link them as `recordings` in `tuna.json` instead.

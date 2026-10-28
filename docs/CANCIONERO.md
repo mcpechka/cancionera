@@ -171,7 +171,7 @@ The bundel writes bandurria/laúd notes as two-digit numbers (`50 52 53`, `60 64
 
 **Add a tuna:** fork, copy `tunas/_plantilla/` to `tunas/<id>/` (or fill in the reserved folder), fill in `tuna.json`, add `<id>` to `tunas/index.json` if new, run `python3 tools/check.py`, open a pull request. The site's *Añade tu tuna* tab shows the same steps.
 
-**Add melody, tabs or scans:** `tunas/<id>/parts/<song-file>/<instrument>-<what>.<ext>`, see `tunas/README.md`. The site doesn't show these yet (roadmap B).
+**Add melody, tabs or scans:** `tunas/<id>/parts/<song-file>/<instrument>-<what>.<ext>`, see `tunas/README.md`, then run `python3 tools/parts_index.py`. Each song page lists its parts, filtered by instrument.
 
 **Publish:** GitHub → Settings → Pages → Deploy from branch `main`, folder `/ (root)`. The site is then at `https://mcpechka.github.io/cancionera/`.
 
@@ -225,6 +225,8 @@ Ordered by how much it helps playing together. Each item says what "done" looks 
 ### B. Melody and other instruments
 
 The material exists in many forms: printouts of old PDFs, photos of sheets that no longer exist, bandurria tabs, proper notation, LilyPond (`.ly`), Guitar Pro (`.gp5`), MIDI, and the zips in `Banduriabundel/`. There is no single format, so the plan is **collect first, digitise second**.
+
+Status (October 2026): steps 1 and 2 are done for Ciudad de Luz. The *Cancionero* archive (the shared drive with a folder per song) was sorted into `tunas/ciudad-de-luz/parts/` (322 files, 85 songs: PDFs, scans, MIDI, MuseScore, Guitar Pro, and lyric sheets converted to PDF), and `docs/parts_inventory.csv` lists every file in the archive, including about 200 practice recordings (stems per voice and instrument) that stay out of git.
 
 1. **Inventory.** One table (a CSV in `documentation/`) with a row per song × instrument (melody/voice, bandurria, laúd, guitar, guitarrón, cuatro, percussion) and columns: what exists, format, where it is, quality. This shows what's missing and what to digitise first.
 2. **Store originals as-is** in `tunas/<id>/parts/<song-file>/` (folders already exist) (scans as JPG/PDF, `.ly`, `.gp5`, `.mid`, `.musicxml`), named `<instrument>-<what>.<ext>`, e.g. `parts/fonseca/bandurria-melodia.pdf`. The site lists them per song; images and PDFs are viewable immediately. Even an unreadable old photo is better than nothing.

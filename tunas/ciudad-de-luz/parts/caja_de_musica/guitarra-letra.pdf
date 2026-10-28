@@ -1,0 +1,82 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+3 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+4 0 obj
+<< /Length 1168 >>
+stream
+BT /F2 13 Tf 40 806 Td (LaCajaDeMusica Gitaar) Tj ET
+BT /F1 9.5 Tf 11.6 TL 40 782 Td
+(La Caja de Musica) '
+(Gitaar) '
+() '
+() '
+() '
+(Intro deel 1) '
+(Solo Bandurria 1 en Laud, 16 maten) '
+() '
+() '
+(Intro deel 2) '
+(Inval gitaar, 3/4) '
+() '
+(| G   | D   | G   | D   | G   | D   | G   | G7  |) '
+(| 63  | 40  | 63  | 40  | 63  | 40  | 63  | 63  |) '
+() '
+(| Am  | Cm  | D   | D7  | G   | D   | G   | G7  |) '
+(| 53  | 53  | 40  | 50  | 63  | 40  | 63  | strijkje) '
+() '
+(Couplet 1) '
+(Inval zang) '
+() '
+(| Em  | Em  | Em  | de rest volgt nog) '
+(| 42  | 41  | 40  |) '
+() '
+() '
+() '
+() '
+(----------------------------------------------------------) '
+(Voor de liefhebbers:) '
+() '
+() '
+(1\) Lees de Am als een C6, speel de Cm als een Cm6.) '
+() '
+(Dan wordt dat bijvoorbeeld:) '
+(C6                              Cm6) '
+(53 {42 32 21} {42 32 21}        53 {41 32 21} {41 32 21}) '
+(                             of 53 {32 24 13} {32 24 13}) '
+() '
+(Of hoger op de hals:) '
+(C6                              Cm6) '
+(53 {35 25 15} {35 25 15}        53 {35 24 15} {35 24 15}) '
+() '
+(2\) Speel op het einde van Intro deel 2 geen G7 maar G9:) '
+({63 52 40 32 20 11}) '
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 3 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Type /Catalog /Pages 3 0 R >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000104 00000 n 
+0000000206 00000 n 
+0000000263 00000 n 
+0000001483 00000 n 
+0000001619 00000 n 
+trailer
+<< /Size 7 /Root 6 0 R >>
+startxref
+1668
+%%EOF
