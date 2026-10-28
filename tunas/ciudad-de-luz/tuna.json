@@ -8,8 +8,20 @@
   "notes": "",
   "photos": [],
   "recordings": [],
-  "artist": {},
-  "albums": [],
+  "artist": {
+    "spotify": "https://open.spotify.com/artist/5FJcX3SUaKTFqE3dsZOSxN"
+  },
+  "albums": [
+    {
+      "title": "El Camino sin Destino",
+      "year": 2014,
+      "cover": "https://i.scdn.co/image/ab67616d0000b273ca67be0119fc987dc43af95c",
+      "links": {
+        "spotify": "https://open.spotify.com/album/1J51TmvYEyXmVECxZbUqpb"
+      },
+      "tracks": []
+    }
+  ],
   "songs": [
     "songs/adelita.cho",
     "songs/aguas.cho",
