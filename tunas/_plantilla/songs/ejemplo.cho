@@ -1,0 +1,18 @@
+{title: Nombre de la canción}
+{key: Am}
+{time: 3/4}
+{meta: rhythm Vals}
+
+{comment: Intro}
+| [Am] | . | [Dm] | [E7] |
+
+{start_of_verse: Couplet 1}
+[Am]Primera línea de la [Dm]letra
+con los a[E7]cordes en su [Am]sitio
+{end_of_verse}
+
+{start_of_chorus: Estribillo}
+[A]Línea del es[E7]tribillo
+{end_of_chorus}
+
+{chorus: Estribillo}

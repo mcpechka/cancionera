@@ -1,0 +1,15 @@
+{
+  "name": "Tuna de …",
+  "status": "pendiente",
+  "city": "",
+  "country": "",
+  "founded": "",
+  "beca": "",
+  "web": "",
+  "notes": "",
+  "songs": [
+    "songs/ejemplo.cho"
+  ],
+  "photos": [],
+  "recordings": []
+}

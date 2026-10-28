@@ -1,0 +1,218 @@
+"""Convert Tunabundel LaTeX song files (tunaChords.sty) to ChordPro.
+Usage: python3 tools/tex2cho.py <tunabundel>/bundel/songs <out_dir>
+Prints only file names and counts, never song content."""
+import re, os, sys, unicodedata
+
+SRC, OUT = sys.argv[1], sys.argv[2]
+os.makedirs(OUT, exist_ok=True)
+
+CHORD_RE = re.compile(r"^(?:[A-G]|Do|Re|Mi|Fa|Sol|La|Si)(?:#|b)?(?:m|maj|min|dim|aug|sus|add|°|\+|ø|\d|\(|\)|M)*(?:/(?:[A-G]|Do|Re|Mi|Fa|Sol|La|Si)(?:#|b)?)?$")
+STYLE = {"paso_doble": "Paso doble", "vals": "Vals", "tango": "Tango", "bolero": "Bolero", "son": "Son", "copla": "Copla",
+         "huayno": "Huayno", "joropo": "Joropo", "fado": "Fado", "takirari": "Takirari", "tropical": "Tropical"}
+
+def braced(s, i):
+    d = 0
+    for j in range(i, len(s)):
+        if s[j] == "{": d += 1
+        elif s[j] == "}":
+            d -= 1
+            if d == 0: return s[i + 1:j], j + 1
+    return s[i + 1:], len(s)
+
+def text(t):
+    t = t.replace("!`", "¡").replace("?`", "¿")
+    t = re.sub(r"\\'\{?\\i\}?", "í", t)
+    t = re.sub(r"\\'\{?([aeiouAEIOU])\}?", lambda m: unicodedata.normalize("NFC", m.group(1) + "\u0301"), t)
+    t = re.sub(r"\\~\{?n\}?", "ñ", t); t = re.sub(r"\\~\{?N\}?", "Ñ", t)
+    t = re.sub(r'\\"\{?([uU])\}?', lambda m: "ü" if m.group(1) == "u" else "Ü", t)
+    t = t.replace("\\textquestiondown", "¿").replace("\\ldots", "…")
+    t = re.sub(r"\\(?:hspace|vspace|phantom)\*?\{[^{}]*\}", " ", t)
+    t = re.sub(r"\\(?:textbf|textnormal|textit|emph|underline)\{([^{}]*)\}", r"\1", t)
+    t = t.replace("\\_", " ").replace("$\\_$", " ").replace("``", "\"").replace("''", "\"")
+    t = t.replace("$\\downarrow$", "↓").replace("$\\uparrow$", "↑").replace("$\\sharp$", "#").replace("$\\flat$", "b").replace("$\\circ$", "°")
+    t = re.sub(r"\\nicefrac\{(\d+)\}\{(\d+)\}", r"\1/\2", t)
+    t = re.sub(r"\$[^$]*\$", "", t)
+    t = re.sub(r"\\[a-zA-Z]+\*?", "", t)
+    t = t.replace("{", "").replace("}", "").replace("~", " ").replace("\\", "")
+    return re.sub(r"[ \t]+", " ", t)
+
+DUTCH = {"is": "#", "es": "b", "s": "b"}
+
+def split_tab(raw):
+    """'Dm\\tiny{\\underline{40}}' -> ('Dm', ['40'])"""
+    tabs = re.findall(r"\\underline\{([^{}]*)\}", raw)
+    rest = re.sub(r"(?:\\tiny|\\small|\\footnotesize)?\s*\{?\\underline\{[^{}]*\}\}?", " ", raw)
+    rest = re.sub(r"\\(?:tiny|small|footnotesize)\b", "", rest)
+    return rest.strip(), [re.sub(r"\s+", " ", text(t)).strip() for t in tabs if text(t).strip()]
+
+def chord_name(c):
+    m = re.match(r"^\s*\*?([A-G])(is|es|s)(?![a-z])(.*)$", c)
+    if m and not (m.group(1) in "CDFG" and m.group(2) == "s"):
+        c = m.group(1) + DUTCH[m.group(2)] + m.group(3)
+    c = c.replace("$\\sharp$", "#").replace("\\sharp", "#").replace("$\\flat$", "b").replace("\\flat", "b")
+    c = c.replace("$\\circ$", "°") if re.match(r"^\s*[A-G][#b]?\$\\circ\$\s*$", c) else c
+    c = re.split(r"\$|;|\s", c.strip())[0].replace("\\", "").strip().strip("*")
+    return c if c and CHORD_RE.match(c) else None
+
+def chord_token(body, defines):
+    """LaTeX \\chord body -> ChordPro token ('' for nothing)."""
+    b = body.strip()
+    fm = re.match(r"^\*?\s*([^:]+?)\s*:\s*([x\d][x\d\-\s]+)$", text(b).strip())
+    if fm and chord_name(fm.group(1)):
+        frets = [f for f in re.split(r"[-\s]+", fm.group(2).strip()) if f]
+        if len(frets) in (4, 6):
+            defines[chord_name(fm.group(1))] = " ".join(frets)
+        return ""
+    rest, tabs = split_tab(b)
+    if tabs and chord_name(rest):
+        return "[" + chord_name(rest) + "]" + "".join("[*" + t + "]" for t in tabs)
+    c = chord_name(b)
+    if c: return "[" + c + "]"
+    pm = re.match(r"^\s*([^()]+?)\s*\((.+)\)\s*$", text(b))
+    if pm and chord_name(pm.group(1)): return "[" + chord_name(pm.group(1)) + "][*" + pm.group(2).strip() + "]"
+    ann = text(b).strip().strip("_ ")
+    ann = re.sub(r"\s+", " ", ann)
+    return "[*" + ann.replace("]", ")") + "]" if ann else ""
+
+def line_to_cho(line, defines):
+    out, last, i = [], 0, 0
+    pat = re.compile(r"\\chord\*?\{")
+    while True:
+        m = pat.search(line, last)
+        if not m: break
+        body, end = braced(line, m.end() - 1)
+        out.append(text(line[last:m.start()]))
+        out.append(chord_token(body, defines))
+        last = end
+    out.append(text(line[last:]))
+    return re.sub(r"\s+", " ", "".join(out)).strip()
+
+def measure_cell(body, rep):
+    """One \\measure: beats are separated by ';' (tunaChords.sty), ':' marks repeats."""
+    raw_beats = body.split(";")
+    tabs_per_beat = []
+    for i, rb in enumerate(raw_beats):
+        rest, tabs = split_tab(rb); raw_beats[i] = rest; tabs_per_beat.append(tabs)
+    body = ";".join(raw_beats)
+    tb = re.sub(r"\s+", " ", text(body)).strip()
+    rs = re_ = False
+    if tb == ":":
+        re_, tb = True, ""
+    else:
+        if tb.startswith(":"): rs, tb = True, tb[1:].strip()
+        if tb.endswith(":"): re_, tb = True, tb[:-1].strip()
+    if rep.strip() == ":": re_ = True
+    items = []
+    for bi, beat in enumerate(tb.split(";")):
+        extra = "".join(" [*" + t + "]" for t in (tabs_per_beat[bi] if bi < len(tabs_per_beat) else []))
+        if extra:
+            bb = beat.replace("↓", "").replace("↑", "").replace("*", "").strip()
+            c = chord_name(bb)
+            items.append(("[" + c + "]" if c else ("[*" + bb + "]" if bb else "")) .strip() + extra if (c or bb) else extra.strip()); continue
+        b = beat.replace("↓", "").replace("↑", "").replace("*", "").strip()
+        if b in ("", "°", "o", "x"): items.append(None); continue
+        c = chord_name(b)
+        if c: items.append("[" + c + "]"); continue
+        pm = re.match(r"^([^()]+?)\s*\((.+)\)$", b)
+        if pm and chord_name(pm.group(1)): items.append("[" + chord_name(pm.group(1)) + "] [*" + pm.group(2).strip() + "]"); continue
+        items.append("[*" + b.replace("]", ")") + "]")
+    while items and items[-1] is None: items.pop()
+    if not items: cell = "."
+    elif all(i is None for i in items[1:]) and items[0]: cell = items[0]
+    else: cell = " ".join(i or "." for i in items)
+    if rep.strip().isdigit(): cell += " (" + rep.strip() + "x)"
+    return (": " if rs else "") + cell + (" :" if re_ else "")
+
+def measures(row):
+    cells, last = [], 0
+    pat = re.compile(r"\\measure\*?(?:\[[^\]]*\])?\{")
+    while True:
+        m = pat.search(row, last)
+        if not m: break
+        body, end = braced(row, m.end() - 1)
+        rep = ""
+        if end < len(row) and row[end] == "[":
+            close = row.find("]", end)
+            if close > 0: rep = row[end + 1:close]; end = close + 1
+        cells.append(measure_cell(body, rep))
+        last = end
+    return cells
+
+def is_chorus(name):
+    return bool(re.match(r"^(refrein|refrain|estribillo|coro|chorus)", name.strip(), re.I))
+
+def convert(raw):
+    raw = "\n".join(l for l in raw.split("\n") if not l.lstrip().startswith("%"))
+    m = re.search(r"\\begin\{song\}\*?(?:\[([^\]]*)\])?\{", raw)
+    if not m: return None
+    title, _ = braced(raw, m.end() - 1)
+    title = text(title).strip()
+    if not title: return None
+    style = (m.group(1) or "").strip()
+    head = ["{title: " + title + "}"]
+    km = re.search(r"\\rhythmandkey\*?(?:\[([^\]]*)\])?\{([^{}]*)\}\{", raw)
+    if km:
+        kb, _ = braced(raw, km.end() - 1)
+        key = chord_name(re.sub(r"\\chord\*?\{([^{}]*)\}", r"\1", kb)) or text(kb).strip()
+        if key: head.append("{key: " + key + "}")
+        mt = re.search(r"nicefrac\{(\d+)\}\{(\d+)\}", km.group(1) or "")
+        if mt: head.append("{time: " + mt.group(1) + "/" + mt.group(2) + "}")
+        rhythm = text(km.group(2)).strip()
+        if rhythm: head.append("{meta: rhythm " + rhythm + "}")
+    elif style in STYLE:
+        head.append("{meta: rhythm " + STYLE[style] + "}")
+    head.append("{meta: source Tunabundel – Tuna Ciudad de Luz}")
+    defines, body = {}, []
+    song_part = raw.split("\\end{song}")[0]
+    rx = re.compile(r"\\begin\{(verse|instrumental|sidenote)\}(?:\{((?:[^{}]|\{[^{}]*\})*)\})?(?:\[(\d+)\])?(.*?)\\end\{\1\}|\\repetition\{((?:[^{}]|\{[^{}]*\})*)\}|\\textbf\{((?:[^{}]|\{[^{}]*\})*)\}", re.S)
+    for b in rx.finditer(song_part):
+        if b.group(6) is not None:
+            for part in re.split(r"\\\\", b.group(6)):
+                note = re.sub(r"\s+", " ", text(part)).strip()
+                if note: body.append("{comment: " + note + "}")
+            body.append("")
+            continue
+        if b.group(5) is not None:
+            name = text(b.group(5)).strip()
+            body.append("{chorus: " + name + "}" if is_chorus(name) else "{comment: " + name + " (repetir)}")
+            body.append("")
+            continue
+        kind, name, per_row, content = b.group(1), text(b.group(2) or "").strip(), b.group(3), b.group(4)
+        if kind == "sidenote":
+            note = re.sub(r"\s+", " ", text(content)).strip()
+            if note: body.append("{comment: " + note + "}"); body.append("")
+            continue
+        if kind == "instrumental":
+            rows = [measures(r) for r in re.split(r"\\\\|\n", content)]
+            rows = [r for r in rows if r]
+            flat = [c for r in rows for c in r]; k = int(per_row or 8)
+            if per_row or any(len(r) > 8 for r in rows):
+                rows = [flat[i:i + k] for i in range(0, len(flat), k)]
+            if not any("[" in c and "[*" not in c.split("[")[1][:1] for r in rows for c in r) and not any(re.search(r"\[[^*]", c) for r in rows for c in r): continue
+            if not rows: continue
+            body.append("{comment: " + (name or "Instrumental") + "}")
+            for r in rows: body.append("| " + " | ".join(r) + " |")
+            body.append("")
+            continue
+        env = "chorus" if is_chorus(name) else "verse"
+        body.append("{start_of_" + env + (": " + name if name else "") + "}")
+        for row in re.split(r"\\\\", content):
+            row = row.strip()
+            if not row: continue
+            l = line_to_cho(row.replace("\n", " "), defines)
+            if l: body.append(l)
+        body.append("{end_of_" + env + "}")
+        body.append("")
+    defs = ["{define: " + c + " base-fret 1 frets " + f + "}" for c, f in defines.items()]
+    while body and body[-1] == "": body.pop()
+    if not any(l and not l.startswith("{") for l in body): return None
+    return "\n".join(head + defs + [""] + body) + "\n"
+
+done, skipped = [], []
+for f in sorted(os.listdir(SRC)):
+    if not f.endswith(".tex"): continue
+    cho = convert(open(os.path.join(SRC, f), encoding="utf-8", errors="replace").read())
+    if cho:
+        open(os.path.join(OUT, f[:-4] + ".cho"), "w", encoding="utf-8").write(cho); done.append(f)
+    else: skipped.append(f)
+print("converted", len(done), "| skipped", len(skipped), skipped)
