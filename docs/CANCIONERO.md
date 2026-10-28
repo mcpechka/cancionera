@@ -107,6 +107,25 @@ Reserved folders (`"status": "pendiente"`) exist for the tunas whose songbooks a
 - `status`: `"pendiente"` shows the tuna as reserved; remove it once there are songs.
 - `photos`: JPG/PNG/WebP files in `photos/`; the first one is shown on the tuna card.
 - `historia.md` is shown on the tuna card as "Historia" (plain paragraphs).
+- `artist`: the tuna's profile on music platforms, `{ "spotify": "https://open.spotify.com/artist/…", "youtube": "…" }`. Shown as buttons on the tuna card.
+- `albums`: `[{ "title", "year", "cover", "links": { "spotify": "…", "apple_music": "…", … }, "tracks": ["Fonseca", …] }]`. Shown on the *Discos* page. `cover` is a file in the tuna folder or an https URL. `tracks` are matched to songs by title, so each song page lists the albums it's on and each track links to its song.
+
+### 4.1.1 Music platforms
+
+The site has a small registry, `PLATFORMS` in `index.html`. Each entry has a name, a colour, a pattern that recognises its links and, optionally, a function that turns a link into an embeddable player. Current entries:
+
+| Key | Platform | Player on the site |
+|---|---|---|
+| `spotify` | Spotify | yes (album, track, playlist, artist) |
+| `apple_music` | Apple Music | yes |
+| `youtube` | YouTube / YouTube Music | yes (video or playlist, via youtube-nocookie) |
+| `deezer` | Deezer | yes |
+| `soundcloud` | SoundCloud | yes |
+| `bandcamp`, `amazon_music`, `tidal` | | link only |
+
+Players are loaded only when someone presses *Escuchar aquí*, because embedding them sets the platform's cookies. Unknown keys still work as plain links. Adding a platform is one new entry in `PLATFORMS`; nothing else changes.
+
+There is no Spotify API call: the site only needs the public links, so no keys or accounts are involved. Covers and track lists come from `tuna.json`, not from Spotify.
 - `beca`: one of `burdeos granate rojo naranja amarillo verde turquesa celeste azul morado rosa negro plata blanco`, or a hex colour like `#1f4e9c`.
 - `label`: optional text shown after the tuna name on every version (e.g. `"2004"` for an old edition).
 - `recordings[].song` is matched to a song by title, the same way versions are.
@@ -221,7 +240,8 @@ Done when every song on the site has at least the melody in MusicXML or a readab
 ### C. Tuna pages
 
 - **Photos:** supported. Put files in `tunas/<id>/photos/` and list them in `tuna.json`; the first is shown on the tuna card. Next: a gallery per tuna. Keep files under ~500 KB so the repo stays fast.
-- **Website and socials:** `web` exists; add `instagram`, `youtube`, `contact`.
+- **Website and socials:** `web` exists; music platforms via `artist` and `albums` (section 4.1). Still to add: `instagram`, `contact`.
+- **Discography:** fill in Ciudad de Luz's albums with their Spotify links.
 - **History:** supported via `tunas/<id>/historia.md` (template text in every folder), a short overview (founding, notable trips and certámenes, traditions), rendered on the tuna card. For Ciudad de Luz the 2004 bundel, the 2015 LaTeX start and the festival bundels (Murcia, Torremolinos) are a starting timeline.
 - **Beca colour and *estandarte*/logo** (`bundel/logo.eps` exists).
 

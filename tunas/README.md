@@ -4,7 +4,7 @@ One folder per tuna. The website loads every folder listed in `index.json`.
 
 ```
 tunas/<id>/
-  tuna.json      name, city, beca colour, links, list of songs, photos, recordings
+  tuna.json      name, city, beca colour, links, songs, photos, recordings, albums (Spotify etc.)
   historia.md    short history of the tuna (plain text paragraphs; first line "# Historia")
   songs/         one ChordPro file (.cho) per song
   parts/         melodies, tabs and sheet music, one subfolder per song (see below)

@@ -114,6 +114,17 @@ textarea{min-height:220px;font:14px/1.6 var(--f-mono);resize:vertical}
 .tphoto{margin:0}.tphoto img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}.tphoto figcaption{font-size:12px;color:var(--muted);padding:4px 16px 0}
 .pill{align-self:flex-start;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--muted)}
 .tuna details p{margin:6px 0;font-size:14px}.tuna summary{cursor:pointer;color:var(--accent);font-size:14px}
+.albums{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:14px}
+.album{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ahead{display:flex;gap:14px;align-items:flex-start}
+.acover{width:88px;height:88px;border-radius:4px;object-fit:cover;flex-shrink:0;box-shadow:0 0 0 1px var(--line)}
+.ameta{min-width:0;display:flex;flex-direction:column;gap:4px}.ameta h3{font:700 19px var(--f-display);margin:0}.ameta small{color:var(--muted)}
+.plinks{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.plink{display:inline-flex;align-items:center;gap:6px;font-size:13px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--ink);text-decoration:none}
+.plink:hover{border-color:var(--muted)}.pdot{width:8px;height:8px;border-radius:50%}
+.embed{display:flex;flex-direction:column;gap:6px;align-items:flex-start}.embed iframe{width:100%;border:0;border-radius:12px}
+.tracks{margin:6px 0 0;padding-left:22px;font-size:14px}.tracks button{all:unset;cursor:pointer;color:var(--accent);text-decoration:underline;text-decoration-color:var(--line)}
+.album summary{cursor:pointer;color:var(--accent);font-size:14px}
 .gtimes{font:600 13px var(--f-mono);color:var(--muted)}
 .cp .tx{font-size:17px;line-height:1.35}
 .cp .sec{font:500 12px var(--f-body);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:14px 0 4px}
@@ -306,7 +317,7 @@ const T={
   j3:"Pon tus canciones en songs/ en formato ChordPro (.cho) y añádelas a la lista songs de tuna.json. Melodías, tablaturas y partituras van en parts/, fotos en photos/ y una breve historia en historia.md.",
   j4:"Si la carpeta es nueva, añade su nombre a tunas/index.json. Abre un pull request.",
   jNote:"Las canciones se agrupan por título, así que la versión de tu tuna aparecerá al lado de las demás y se podrán comparar los acordes.",
-  chordpro:"Ejemplo de canción (.cho)",pending:"Pendiente: aún sin canciones",history:"Historia",copy:"Copiar",copied:"Copiado",files:"archivos"},
+  chordpro:"Ejemplo de canción (.cho)",pending:"Pendiente: aún sin canciones",music:"Discos",noMusic:"Aún no hay discos.",noMusicB:"Cada tuna añade sus discos en tuna.json (albums) con los enlaces de Spotify y otras plataformas.",play:"Escuchar aquí",embedNote:"Al pulsar se carga el reproductor de %s (usa sus cookies).",tracks:"Canciones",onAlbum:"En disco",history:"Historia",copy:"Copiar",copied:"Copiado",files:"archivos"},
  en:{tag:"Shared repertoire and chords across tunas",songs:"Songs",tunas:"Tunas",recs:"Recordings",join:"Add your tuna",search:"Search songs",allT:"All tunas",allG:"All styles",back:"← Songs",
   origin:"Author",genre:"Style",key:"Key",capo:"Capo",versions:"Versions",transpose:"Transpose",notation:"Notation",orig:"Original",compare:"Compare with",none:"None",align:"Match key",
   diffNote:"Yellow: chords that differ from the first version.",noRec:"No recordings yet.",open:"Open link",src:"View file on GitHub",founded:"Founded",
@@ -317,7 +328,7 @@ const T={
   j3:"Put your songs in songs/ as ChordPro (.cho) and list them under songs in tuna.json. Melodies, tabs and sheet music go in parts/, photos in photos/ and a short history in historia.md.",
   j4:"If the folder is new, add its name to tunas/index.json. Open a pull request.",
   jNote:"Songs are grouped by title, so your tuna's version shows up next to the others and the chords can be compared.",
-  chordpro:"Example song (.cho)",pending:"Pending: no songs yet",history:"History",copy:"Copy",copied:"Copied",files:"files"}
+  chordpro:"Example song (.cho)",pending:"Pending: no songs yet",music:"Albums",noMusic:"No albums yet.",noMusicB:"Each tuna adds its albums in tuna.json (albums) with Spotify and other platform links.",play:"Listen here",embedNote:"Clicking loads the %s player (uses its cookies).",tracks:"Tracks",onAlbum:"On album",history:"History",copy:"Copy",copied:"Copied",files:"files"}
 };
 let LANG="es";try{LANG=localStorage.getItem("cc-lang")||"es"}catch(e){}
 const t=k=>(T[LANG]&&T[LANG][k])||T.es[k]||k;
@@ -354,7 +365,7 @@ function songKeys(title){
   return[...new Set([s,art(s),noPar,art(noPar),par].map(fold).filter(x=>x.length>2))];
 }
 
-const S={tunas:[],songs:[],versions:[],recs:[],view:"songs",songId:null,verA:null,verB:null,shift:0,nota:"orig",align:true,q:"",fT:"",fG:"",rT:"",err:null,loaded:false};
+const S={tunas:[],songs:[],versions:[],recs:[],albums:[],view:"songs",songId:null,verA:null,verB:null,shift:0,nota:"orig",align:true,q:"",fT:"",fG:"",rT:"",err:null,loaded:false};
 const tunaById=id=>S.tunas.find(x=>x.id===id);
 const becaOf=id=>{const tn=tunaById(id);return BECAS[tn&&tn.beca]||(tn&&/^#[0-9a-f]{6}$/i.test(tn.beca||"")?tn.beca:"transparent")};
 const songName=id=>(S.songs.find(s=>s.id===id)||{}).title||"—";
@@ -378,6 +389,7 @@ async function loadTuna(id){
   const tuna={id,name:cfg.name||id,city:cfg.city||"",country:cfg.country||"",founded:cfg.founded||"",beca:cfg.beca||"",notes:cfg.notes||"",web:cfg.web||"",
     pending:cfg.status==="pendiente",photos:[].concat(cfg.photos||[]).filter(ph=>ph&&ph.file&&/^[\w\-./]+\.(jpe?g|png|webp)$/i.test(ph.file)&&!ph.file.includes("..")).map(ph=>({src:base+ph.file,caption:ph.caption||""})),historia:""};
   S.tunas.push(tuna);
+  tuna.links=cleanLinks(cfg.artist);
   try{const h=await getText(base+"historia.md");if(!/^<!--\s*plantilla/i.test(h.trim()))tuna.historia=h.trim()}catch(e){}
   const files=[];
   for(const b of [].concat(cfg.bundel||[])){
@@ -394,10 +406,19 @@ async function loadTuna(id){
     else p=parseChordPro(raw,fb);
     if(p&&p.title&&p.text&&p.text.includes("["))addSong(p,id,f.path,f.label);
   }
+  loadAlbums(cfg,id,base);
   for(const r of [].concat(cfg.recordings||[])){
     if(!r||!/^https:\/\//i.test(r.url||""))continue;
     const ks=songKeys(r.song),s=S.songs.find(x=>x.keys.some(k=>ks.includes(k)));
     S.recs.push({songId:s?s.id:null,songTitle:r.song||"",tunaId:id,title:r.title||"",url:r.url,date:r.date||"",event:r.event||""});
+  }
+}
+function loadAlbums(cfg,id,base){
+  for(const a of [].concat(cfg.albums||[])){
+    if(!a||!a.title)continue;
+    const cover=a.cover&&/^[\w\-./]+\.(jpe?g|png|webp)$/i.test(a.cover)&&!a.cover.includes("..")?base+a.cover:(a.cover&&/^https:\/\//.test(a.cover)?a.cover:"");
+    const tracks=[].concat(a.tracks||[]).map(x=>typeof x==="string"?{title:x}:x).filter(x=>x&&x.title).map(x=>({title:x.title,songId:null}));
+    S.albums.push({tunaId:id,title:a.title,year:a.year||"",cover,links:cleanLinks(a.links),tracks});
   }
 }
 async function load(){
@@ -405,13 +426,53 @@ async function load(){
     const ids=JSON.parse(await getText("tunas/index.json"));
     for(const id of ids){if(!/^[a-z0-9-]+$/.test(id))continue;try{await loadTuna(id)}catch(e){console.warn(e)}}
   }catch(e){S.err=String(e.message||e)}
+  for(const al of S.albums)for(const tr of al.tracks){const ks=songKeys(tr.title),sg=S.songs.find(y=>y.keys.some(k=>ks.includes(k)));tr.songId=sg?sg.id:null}
   S.loaded=true;readHash();render();
+}
+
+/* ---------- music platforms ----------
+   To add a platform: add an entry here. `match` recognises its links, `embed` (optional) turns a link
+   into an embeddable player URL (return null if that link can't be embedded), `height` is the player height. */
+const PLATFORMS={
+  spotify:{name:"Spotify",color:"#1db954",match:/^https:\/\/open\.spotify\.com\//,
+    embed:u=>{const m=/open\.spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|playlist|artist)\/([A-Za-z0-9]+)/.exec(u);return m?`https://open.spotify.com/embed/${m[1]}/${m[2]}`:null},
+    height:u=>/\/track\//.test(u)?152:352},
+  apple_music:{name:"Apple Music",color:"#fa2d48",match:/^https:\/\/music\.apple\.com\//,
+    embed:u=>u.replace("https://music.apple.com/","https://embed.music.apple.com/"),height:u=>/[?&]i=/.test(u)?175:450},
+  youtube:{name:"YouTube",color:"#ff0000",match:/^https:\/\/(www\.|music\.)?(youtube\.com|youtu\.be)\//,
+    embed:u=>{const l=/[?&]list=([\w-]+)/.exec(u),v=/(?:v=|youtu\.be\/)([\w-]{6,})/.exec(u);return l?`https://www.youtube-nocookie.com/embed/videoseries?list=${l[1]}`:v?`https://www.youtube-nocookie.com/embed/${v[1]}`:null},height:()=>315},
+  deezer:{name:"Deezer",color:"#a238ff",match:/^https:\/\/(www\.)?deezer\.com\//,
+    embed:u=>{const m=/deezer\.com\/(?:[a-z]{2}\/)?(album|track|playlist|artist)\/(\d+)/.exec(u);return m?`https://widget.deezer.com/widget/auto/${m[1]}/${m[2]}`:null},height:()=>300},
+  soundcloud:{name:"SoundCloud",color:"#ff5500",match:/^https:\/\/soundcloud\.com\//,
+    embed:u=>"https://w.soundcloud.com/player/?url="+encodeURIComponent(u)+"&visual=false",height:()=>300},
+  bandcamp:{name:"Bandcamp",color:"#1da0c3",match:/^https:\/\/[\w-]+\.bandcamp\.com\//},
+  amazon_music:{name:"Amazon Music",color:"#25d1da",match:/^https:\/\/music\.amazon\./},
+  tidal:{name:"TIDAL",color:"#7d7d85",match:/^https:\/\/(listen\.)?tidal\.com\//}
+};
+const platformOf=(key,url)=>PLATFORMS[key]&&PLATFORMS[key].match.test(url)?PLATFORMS[key]:Object.values(PLATFORMS).find(p=>p.match.test(url))||null;
+function cleanLinks(obj){const out=[];for(const[k,u]of Object.entries(obj||{})){if(typeof u!=="string"||!/^https:\/\//.test(u))continue;const pl=platformOf(k,u);out.push({key:k,url:u,pl,name:pl?pl.name:k.replace(/_/g," ")})}return out}
+function linkButtons(links){return links.map(l=>`<a class="plink" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer"><span class="pdot" style="background:${l.pl?l.pl.color:"var(--muted)"}"></span>${esc(l.name)} ↗</a>`).join("")}
+function albumCard(a,showTuna){
+  const emb=a.links.find(l=>l.pl&&l.pl.embed&&l.pl.embed(l.url));
+  const tracks=a.tracks.map(tr=>{const s=tr.songId&&S.songs.find(x=>x.id===tr.songId);
+    return `<li>${s?`<button type="button" data-go="c-${esc(s.id)}">${esc(tr.title)}</button>`:esc(tr.title)}</li>`}).join("");
+  return `<article class="album"><div class="ahead">
+      ${a.cover?`<img class="acover" src="${esc(a.cover)}" alt="" loading="lazy">`:`<div class="acover ph" style="background:${becaOf(a.tunaId)==="transparent"?"var(--sunk)":becaOf(a.tunaId)}"></div>`}
+      <div class="ameta"><h3>${esc(a.title)}</h3><small>${showTuna?esc(vname(a))+" · ":""}${esc(a.year||"")}</small>
+      <div class="plinks">${linkButtons(a.links)}</div></div></div>
+    ${emb?`<div class="embed" data-src="${esc(emb.pl.embed(emb.url))}" data-h="${emb.pl.height?emb.pl.height(emb.url):352}"><button class="btn" type="button" data-act="embed">${esc(t("play"))} · ${esc(emb.pl.name)}</button><span class="hint">${esc(t("embedNote").replace("%s",emb.pl.name))}</span></div>`:""}
+    ${tracks?`<details><summary>${esc(t("tracks"))} (${a.tracks.length})</summary><ol class="tracks">${tracks}</ol></details>`:""}
+  </article>`;
+}
+function renderMusic(){
+  const list=S.albums.slice().sort((a,b)=>String(b.year).localeCompare(String(a.year))||sortT(a,b));
+  return `<h3 class="sh">${esc(t("music"))}</h3>${list.length?`<div class="albums">${list.map(a=>albumCard(a,true)).join("")}</div>`:`<div class="empty"><h3>${esc(t("noMusic"))}</h3>${esc(t("noMusicB"))}</div>`}`;
 }
 
 /* routing */
 function readHash(){
   const h=location.hash.slice(1);
-  if(h==="tunas")S.view="tunas";else if(h==="grabaciones")S.view="recs";else if(h==="unete")S.view="join";
+  if(h==="tunas")S.view="tunas";else if(h==="grabaciones")S.view="recs";else if(h==="discos")S.view="music";else if(h==="unete")S.view="join";
   else if(h.startsWith("c-")){S.view="songs";if(S.songId!==h.slice(2)){S.songId=h.slice(2);S.verA=null;S.verB=null;S.shift=0}}
   else{S.view="songs";if(h===""&&window.innerWidth<=820)S.songId=null}
 }
@@ -424,13 +485,13 @@ function renderChrome(){
   $("#repo").textContent="GitHub";$("#repo").href="https://github.com/"+REPO;
   const tun=S.tunas.filter(x=>becaOf(x.id)!=="transparent");
   $("#ribbons").innerHTML=(tun.length?tun.map(x=>becaOf(x.id)):["#8e1b33"]).map(c=>`<span style="background:${c}"></span>`).join("");
-  $("#tabs").innerHTML=[["songs",t("songs"),""],["tunas",t("tunas"),"tunas"],["recs",t("recs"),"grabaciones"],["join",t("join"),"unete"]].map(([v,l,h])=>`<button type="button" data-go="${h}" aria-current="${S.view===v}">${esc(l)}</button>`).join("");
+  $("#tabs").innerHTML=[["songs",t("songs"),""],["tunas",t("tunas"),"tunas"],["recs",t("recs"),"grabaciones"],["music",t("music"),"discos"],["join",t("join"),"unete"]].map(([v,l,h])=>`<button type="button" data-go="${h}" aria-current="${S.view===v}">${esc(l)}</button>`).join("");
 }
 function render(){
   renderChrome();const app=$("#app");
   if(!S.loaded){app.innerHTML=`<div class="empty">${esc(t("loading"))}</div>`;return}
   const err=S.err?`<p class="notice">${esc(t("loadErr")+S.err)}</p>`:"";
-  app.innerHTML=err+(S.view==="tunas"?renderTunas():S.view==="recs"?renderRecsView():S.view==="join"?renderJoin():renderSongs());
+  app.innerHTML=err+(S.view==="tunas"?renderTunas():S.view==="recs"?renderRecsView():S.view==="join"?renderJoin():S.view==="music"?renderMusic():renderSongs());
   const qi=$("#q");if(qi&&S._qf){qi.focus();qi.setSelectionRange(qi.value.length,qi.value.length)}
 }
 function filteredSongs(){
@@ -488,7 +549,9 @@ function renderSong(s){
     ${B?`<p class="hint">${esc(t("diffNote"))}</p>`:""}
     <div class="cols" style="--n:${B?2:1};margin-top:12px">${A?card(A,S.shift,null,0):""}${B?card(B,S.shift+bShift,A,S.shift):""}</div></div>`;
   const recSec=`<div><h3 class="sh">${esc(t("recs"))}</h3>${recs.length?`<div class="reclist">${recs.map(r=>recCard(r)).join("")}</div>`:`<p class="hint">${esc(t("noRec"))}</p>`}</div>`;
-  return head+verSec+recSec;
+  const onAlb=S.albums.filter(a=>a.tracks.some(tr=>tr.songId===s.id));
+  const albSec=onAlb.length?`<div><h3 class="sh">${esc(t("onAlbum"))}</h3><div class="albums">${onAlb.map(a=>albumCard(a,true)).join("")}</div></div>`:"";
+  return head+verSec+recSec+albSec;
 }
 function recCard(r,showSong){
   const tn=tunaById(r.tunaId);
@@ -516,6 +579,7 @@ function renderTunas(){
       ${x.pending?`<span class="pill">${esc(t("pending"))}</span>`:""}
       ${x.notes?`<p class="vnotes" style="margin:0">${esc(x.notes)}</p>`:""}
       ${x.historia?`<details><summary>${esc(t("history"))}</summary>${x.historia.replace(/^#+\s.*$/gm,"").split(/\n\s*\n/).map(pp=>pp.trim()).filter(Boolean).map(pp=>`<p>${esc(pp)}</p>`).join("")}</details>`:""}
+      ${x.links&&x.links.length?`<div class="plinks">${linkButtons(x.links)}</div>`:""}
       ${/^https:\/\//.test(x.web)?`<a href="${esc(x.web)}" target="_blank" rel="noopener">${esc(x.web.replace(/^https:\/\//,""))} ↗</a>`:""}
     </div></article>`}).join("")}</div>`:`<div class="empty">${esc(t("tunaEmpty"))}</div>`}`;
 }
@@ -528,6 +592,13 @@ const TUNA_JSON=`{
   "web": "https://…",
   "songs": ["songs/fonseca.cho", "songs/clavelitos.cho"],
   "photos": [{ "file": "photos/ronda-2025.jpg", "caption": "Ronda, 2025" }],
+  "artist": { "spotify": "https://open.spotify.com/artist/…" },
+  "albums": [
+    { "title": "Nombre del disco", "year": 2019, "cover": "photos/disco-2019.jpg",
+      "links": { "spotify": "https://open.spotify.com/album/…",
+                 "youtube": "https://www.youtube.com/playlist?list=…" },
+      "tracks": ["Fonseca", "Clavelitos"] }
+  ],
   "recordings": [
     { "song": "Fonseca", "title": "Certamen 2025", "date": "2025-05-10",
       "event": "Certamen de tunas", "url": "https://www.youtube.com/watch?v=…" }
@@ -557,6 +628,7 @@ document.addEventListener("click",async e=>{
   if(act==="pickA"){S.verA=id;if(S.verB===id)S.verB=null;render()}
   else if(act==="sh"){S.shift=Math.max(-11,Math.min(11,S.shift+Number(a.dataset.d)));render()}
   else if(act==="nota"){S.nota=a.dataset.k;render()}
+  else if(act==="embed"){const box=a.closest(".embed");const f=document.createElement("iframe");f.src=box.dataset.src;f.height=box.dataset.h;f.loading="lazy";f.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";f.title=t("play");box.replaceChildren(f)}
   else if(act==="copy"){const txt=document.getElementById(id).textContent;try{await navigator.clipboard.writeText(txt);toast(t("copied"))}catch(err){const r=document.createRange();r.selectNodeContents(document.getElementById(id));const s=getSelection();s.removeAllRanges();s.addRange(r)}}
 });
 document.addEventListener("input",e=>{if(e.target.id==="q"){S.q=e.target.value;S._qf=true;render();S._qf=false}});

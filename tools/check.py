@@ -39,6 +39,16 @@ for i in ids:
     for ph in cfg.get("photos", []):
         if not os.path.isfile(os.path.join(base, ph.get("file", ""))): errors.append(f"tunas/{i}: photo {ph.get('file')} not found")
         elif os.path.getsize(os.path.join(base, ph["file"])) > 1_000_000: warnings.append(f"tunas/{i}: {ph['file']} is over 1 MB")
+    links = [("artist", k, u) for k, u in (cfg.get("artist") or {}).items()]
+    for al in cfg.get("albums", []):
+        if not al.get("title"): errors.append(f"tunas/{i}: an album has no title")
+        links += [(al.get("title") or "album", k, u) for k, u in (al.get("links") or {}).items()]
+        cov = al.get("cover", "")
+        if cov and not cov.startswith("https://") and not os.path.isfile(os.path.join(base, cov)): errors.append(f"tunas/{i}: album cover {cov} not found")
+        for tr in al.get("tracks", []):
+            if not (isinstance(tr, str) or (isinstance(tr, dict) and tr.get("title"))): errors.append(f"tunas/{i}: album {al.get('title')}: bad track {tr!r}")
+    for where, k, u in links:
+        if not str(u).startswith("https://"): errors.append(f"tunas/{i}: {where}: {k} link needs https://")
     for r in cfg.get("recordings", []):
         if not str(r.get("url", "")).startswith("https://"): errors.append(f"tunas/{i}: recording {r.get('title') or r.get('song')} needs an https:// url")
     listed = {os.path.normpath(os.path.join(base, s)) for s in cfg.get("songs", [])}

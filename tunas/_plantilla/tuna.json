@@ -7,9 +7,11 @@
   "beca": "",
   "web": "",
   "notes": "",
+  "photos": [],
+  "recordings": [],
+  "artist": {},
+  "albums": [],
   "songs": [
     "songs/ejemplo.cho"
-  ],
-  "photos": [],
-  "recordings": []
+  ]
 }

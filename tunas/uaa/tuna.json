@@ -7,7 +7,9 @@
   "beca": "",
   "web": "",
   "notes": "Nombre y ciudad por confirmar.",
-  "songs": [],
   "photos": [],
-  "recordings": []
+  "recordings": [],
+  "artist": {},
+  "albums": [],
+  "songs": []
 }

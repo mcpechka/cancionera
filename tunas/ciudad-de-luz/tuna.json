@@ -6,6 +6,10 @@
   "beca": "",
   "web": "",
   "notes": "",
+  "photos": [],
+  "recordings": [],
+  "artist": {},
+  "albums": [],
   "songs": [
     "songs/adelita.cho",
     "songs/aguas.cho",
@@ -59,7 +63,5 @@
     "songs/tuna_de_ingenieros.cho",
     "songs/venezuela.cho",
     "songs/y_viva_espana.cho"
-  ],
-  "photos": [],
-  "recordings": []
+  ]
 }
