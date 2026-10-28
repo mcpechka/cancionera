@@ -205,9 +205,18 @@ Skipped because they have no content: `espana_cani`, `horas_de_rondas`, `luna_de
 
 Everyone who plays from the site should report songs that look wrong. A per-song checklist ("chords checked against how we play it, by whom, when") would make the review measurable; see roadmap item A.
 
-### 6.3 Website limitations
+### 6.3 Songs converted automatically from the archive (October 2026)
+
+15 songs that had no LaTeX source were converted from the chords-over-lyrics sheets in the *Cancionero* archive (`.txt`, `.doc`, `.docx`, PDF). Each file starts with a `# Convertido automáticamente … sin revisar` line naming its source sheet. Chords are placed by column, so some land a few letters early or late, and a few chords sit at the end of a line. Check them against the PDF shown above the chords and delete the comment line once a song is reviewed:
+
+`alicantina`, `aranjuez`, `cancion_con_todos`, `cumpleanos_feliz`, `de_vlieger`, `el_vagabundo`, `guadalajara`, `luna_de_espana`, `malaguena`, `me_voy_pal_pueblo`, `mi_sueno_mejor`, `munequita_linda`, `sabor_a_mi`, `una_paloma_blanca`, `violetas_imperiales`.
+
+13 more conversions were too messy to show (tabs, melody notes, two columns, one chord per paragraph) and are in `songs/borradores/` as a starting point: `amapola`, `cancion_del_corazon`, `dos_palomitas`, `estampa_cumanesa`, `isas`, `madrid`, `merceditas`, `milagro_de_tus_ojos`, `misirlou`, `nl_medley`, `ojos_de_espana`, `samba_em_preludio`, `tres_veces_guapa`.
+
+### 6.4 Website limitations
 
 - Read-only; changes go through GitHub.
+- Sheet music is shown in the browser's own PDF viewer. Some phones (Android) don't display PDFs inside a page; the *Abrir en grande* link opens them full screen.
 - Songs are grouped by title. Two tunas spelling a title very differently ("Tuna Compostelana" vs "Pasa la tuna") end up as two songs; fix by aligning the `{title}`.
 - Chord positions inside a word are as exact as the source. Long chord names can push text sideways on narrow phones.
 

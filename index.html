@@ -170,6 +170,18 @@ h3.sh{font:700 20px var(--f-display);margin:0 0 10px;display:flex;justify-conten
 .plist .pt{flex:1;min-width:10em}
 .plist a{color:var(--accent)}
 .plist img{display:block;max-height:220px;margin-top:6px;border-radius:4px}
+.plist li[aria-current="true"]{background:var(--accent-soft)}
+.viewer{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.viewer .vbar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line)}
+.viewer .vbar select{width:auto;max-width:100%;flex:1 1 220px}
+.viewer .vbar a{color:var(--accent)}
+.viewer iframe{display:block;width:100%;height:min(78vh,900px);border:0;background:var(--sunk)}
+.viewer img{display:block;width:100%;height:auto}
+.viewer .hint{margin:0;padding:6px 12px}
+.partsongs{display:flex;flex-direction:column;gap:16px}
+.partsongs h4{display:flex;align-items:center;gap:10px;margin:0 0 6px;font:700 18px var(--f-display)}
+.partsongs h4 button{all:unset;cursor:pointer}
+.partsongs h4 button:hover{color:var(--accent)}
 @media (prefers-reduced-motion:no-preference){.chip,.btn{transition:border-color .15s,box-shadow .15s}}
 .code{position:relative;margin:8px 0}
 .code pre{margin:0;background:var(--sunk);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;overflow-x:auto;font:13px/1.55 var(--f-mono)}
@@ -327,7 +339,9 @@ const T={
   jNote:"Las canciones se agrupan por título, así que la versión de tu tuna aparecerá al lado de las demás y se podrán comparar los acordes.",
   chordpro:"Ejemplo de canción (.cho)",pending:"Pendiente: aún sin canciones",music:"Discos",noMusic:"Aún no hay discos.",noMusicB:"Cada tuna añade sus discos en tuna.json (albums) con los enlaces de Spotify y otras plataformas.",play:"Escuchar aquí",embedNote:"Al pulsar se carga el reproductor de %s (usa sus cookies).",tracks:"Canciones",onAlbum:"En disco",history:"Historia",copy:"Copiar",copied:"Copiado",files:"archivos",
   parts:"Partituras",partCount:"partituras",everything:"Todo",openFile:"Abrir",noChords:"Aún no hay acordes de esta canción en el cancionero, solo partituras y material.",partEmpty:"Nada para este instrumento.",
-  partHint:"MIDI, MuseScore (.mscz) y Guitar Pro (.gp5) se descargan y se abren en MuseScore."},
+  partHint:"MIDI, MuseScore (.mscz) y Guitar Pro (.gp5) se descargan y se abren en MuseScore.",
+  view:"Ver",download:"Descargar",openFull:"Abrir en grande",allFiles:"Todos los archivos",instrument:"Instrumento",pickPart:"Elige tu instrumento para ver solo tus partes.",partsFor:"%n canciones con partitura para este instrumento.",hasChords:"con acordes",
+  pdfHint:"Si el PDF no se ve aquí (algunos móviles), usa «Abrir en grande»."},
  en:{tag:"Shared repertoire and chords across tunas",songs:"Songs",tunas:"Tunas",recs:"Recordings",join:"Add your tuna",search:"Search songs",allT:"All tunas",allG:"All styles",back:"← Songs",
   origin:"Author",genre:"Style",key:"Key",capo:"Capo",versions:"Versions",transpose:"Transpose",notation:"Notation",orig:"Original",compare:"Compare with",none:"None",align:"Match key",
   diffNote:"Yellow: chords that differ from the first version.",noRec:"No recordings yet.",open:"Open link",src:"View file on GitHub",founded:"Founded",
@@ -340,7 +354,9 @@ const T={
   jNote:"Songs are grouped by title, so your tuna's version shows up next to the others and the chords can be compared.",
   chordpro:"Example song (.cho)",pending:"Pending: no songs yet",music:"Albums",noMusic:"No albums yet.",noMusicB:"Each tuna adds its albums in tuna.json (albums) with Spotify and other platform links.",play:"Listen here",embedNote:"Clicking loads the %s player (uses its cookies).",tracks:"Tracks",onAlbum:"On album",history:"History",copy:"Copy",copied:"Copied",files:"files",
   parts:"Sheet music",partCount:"parts",everything:"All",openFile:"Open",noChords:"No chords for this song in the songbook yet, only sheet music and material.",partEmpty:"Nothing for this instrument.",
-  partHint:"MIDI, MuseScore (.mscz) and Guitar Pro (.gp5) files download and open in MuseScore."}
+  partHint:"MIDI, MuseScore (.mscz) and Guitar Pro (.gp5) files download and open in MuseScore.",
+  view:"View",download:"Download",openFull:"Open full size",allFiles:"All files",instrument:"Instrument",pickPart:"Pick your instrument to see only your parts.",partsFor:"%n songs with sheet music for this instrument.",hasChords:"with chords",
+  pdfHint:"If the PDF doesn't show here (some phones), use “Open full size”."}
 };
 let LANG="es";try{LANG=localStorage.getItem("cc-lang")||"es"}catch(e){}
 const t=k=>(T[LANG]&&T[LANG][k])||T.es[k]||k;
@@ -390,7 +406,7 @@ const instrOf=p=>INSTR[p.instrument]||{es:p.instrument,en:p.instrument,g:"otros"
 const inIGroup=(p,g)=>!g||instrOf(p).g===g||instrOf(p).g==="todos";
 let PART0="";try{PART0=localStorage.getItem("cc-part")||""}catch(e){}
 
-const S={tunas:[],songs:[],versions:[],recs:[],albums:[],parts:[],view:"songs",songId:null,verA:null,verB:null,shift:0,nota:"orig",align:true,q:"",fT:"",fG:"",rT:"",err:null,loaded:false,part:PART0};
+const S={tunas:[],songs:[],versions:[],recs:[],albums:[],parts:[],view:"songs",songId:null,verA:null,verB:null,shift:0,nota:"orig",align:true,q:"",fT:"",fG:"",rT:"",err:null,loaded:false,part:PART0,pv:null,pq:""};
 const tunaById=id=>S.tunas.find(x=>x.id===id);
 const becaOf=id=>{const tn=tunaById(id);return BECAS[tn&&tn.beca]||(tn&&/^#[0-9a-f]{6}$/i.test(tn.beca||"")?tn.beca:"transparent")};
 const songName=id=>(S.songs.find(s=>s.id===id)||{}).title||"—";
@@ -513,8 +529,8 @@ function renderMusic(){
 /* routing */
 function readHash(){
   const h=location.hash.slice(1);
-  if(h==="tunas")S.view="tunas";else if(h==="grabaciones")S.view="recs";else if(h==="discos")S.view="music";else if(h==="unete")S.view="join";
-  else if(h.startsWith("c-")){S.view="songs";if(S.songId!==h.slice(2)){S.songId=h.slice(2);S.verA=null;S.verB=null;S.shift=0}}
+  if(h==="tunas")S.view="tunas";else if(h==="partituras")S.view="parts";else if(h==="grabaciones")S.view="recs";else if(h==="discos")S.view="music";else if(h==="unete")S.view="join";
+  else if(h.startsWith("c-")){S.view="songs";if(S.songId!==h.slice(2)){S.songId=h.slice(2);S.verA=null;S.verB=null;S.shift=0;S.pv=null}}
   else{S.view="songs";if(h===""&&window.innerWidth<=820)S.songId=null}
 }
 function go(h){if(location.hash.slice(1)!==h)location.hash=h;else{readHash();render()}}
@@ -526,14 +542,12 @@ function renderChrome(){
   $("#repo").textContent="GitHub";$("#repo").href="https://github.com/"+REPO;
   const tun=S.tunas.filter(x=>becaOf(x.id)!=="transparent");
   $("#ribbons").innerHTML=(tun.length?tun.map(x=>becaOf(x.id)):["#8e1b33"]).map(c=>`<span style="background:${c}"></span>`).join("");
-  $("#tabs").innerHTML=[["songs",t("songs"),""],["tunas",t("tunas"),"tunas"],["recs",t("recs"),"grabaciones"],["music",t("music"),"discos"],["join",t("join"),"unete"]].map(([v,l,h])=>`<button type="button" data-go="${h}" aria-current="${S.view===v}">${esc(l)}</button>`).join("");
+  $("#tabs").innerHTML=[["songs",t("songs"),""],["parts",t("parts"),"partituras"],["tunas",t("tunas"),"tunas"],["recs",t("recs"),"grabaciones"],["music",t("music"),"discos"],["join",t("join"),"unete"]].map(([v,l,h])=>`<button type="button" data-go="${h}" aria-current="${S.view===v}">${esc(l)}</button>`).join("");
 }
 function render(){
   renderChrome();const app=$("#app");
   if(!S.loaded){app.innerHTML=`<div class="empty">${esc(t("loading"))}</div>`;return}
-  const err=S.err?`<p class="notice">${esc(t("loadErr")+S.err)}</p>`:"";
-  app.innerHTML=err+(S.view==="tunas"?renderTunas():S.view==="recs"?renderRecsView():S.view==="join"?renderJoin():S.view==="music"?renderMusic():renderSongs());
-  const qi=$("#q");if(qi&&S._qf){qi.focus();qi.setSelectionRange(qi.value.length,qi.value.length)}
+  const err=S.err?`<p class="notice">${esc(t("loadErr")+S.err)}</p>`:"";  app.innerHTML=err+(S.view==="tunas"?renderTunas():S.view==="recs"?renderRecsView():S.view==="join"?renderJoin():S.view==="music"?renderMusic():S.view==="parts"?renderPartsView():renderSongs());  const qi=$(S._qf==="pq"?"#pq":"#q");if(qi&&S._qf){qi.focus();qi.setSelectionRange(qi.value.length,qi.value.length)}
 }
 function filteredSongs(){
   const q=fold(S.q);
@@ -590,22 +604,55 @@ function renderSong(s){
     ${B?`<p class="hint">${esc(t("diffNote"))}</p>`:""}
     <div class="cols" style="--n:${B?2:1};margin-top:12px">${A?card(A,S.shift,null,0):""}${B?card(B,S.shift+bShift,A,S.shift):""}</div></div>`;
   const ps=S.parts.filter(p=>p.songId===s.id);
-  const partSec=ps.length?renderParts(ps):"";
+  const partSec=ps.length?renderParts(ps):"",viewSec=ps.length?renderViewer(ps):"";
   const recSec=`<div><h3 class="sh">${esc(t("recs"))}</h3>${recs.length?`<div class="reclist">${recs.map(r=>recCard(r)).join("")}</div>`:`<p class="hint">${esc(t("noRec"))}</p>`}</div>`;
   const onAlb=S.albums.filter(a=>a.tracks.some(tr=>tr.songId===s.id));
   const albSec=onAlb.length?`<div><h3 class="sh">${esc(t("onAlbum"))}</h3><div class="albums">${onAlb.map(a=>albumCard(a,true)).join("")}</div></div>`:"";
-  return head+verSec+partSec+recSec+albSec;
+  return head+viewSec+verSec+partSec+recSec+albSec;
+}
+const viewable=p=>/^(pdf|jpe?g|png|webp)$/.test(p.ext);
+const sortParts=(a,b)=>instrOrder.indexOf(a.instrument)-instrOrder.indexOf(b.instrument)||a.what.localeCompare(b.what)||a.n.localeCompare(b.n,"es",{numeric:true});
+function partSeg(){
+  return `<span class="seg" role="group" aria-label="${esc(t("parts"))}">${[["",t("everything")],...Object.entries(IGROUPS).map(([k,v])=>[k,LL(v)])].map(([k,l])=>`<button type="button" data-act="part" data-k="${k}" aria-pressed="${S.part===k}">${esc(l)}</button>`).join("")}</span>`;
+}
+const partLabel=p=>LL(instrOf(p))+" · "+(LL(WHAT[p.what])||p.what)+(p.n?" "+p.n:"");
+function partRow(p,inSong){
+  const v=viewable(p);
+  return `<li${inSong&&S.pv===p.path?' aria-current="true"':""}><span class="k">${esc(p.ext)}</span><span class="pt">${esc(inSong?(LL(WHAT[p.what])||p.what)+(p.n?" "+p.n:""):partLabel(p))}<small class="hint"> · ${esc(vname(p))}</small></span>
+    ${inSong&&v?`<button class="btn ghost" type="button" data-act="pv" data-p="${esc(p.path)}">${esc(t("view"))}</button>`:""}
+    <a href="${esc(p.path)}" target="_blank" rel="noopener"${v?"":" download"}>${esc(t(v?"openFile":"download"))} ↗</a><a href="${esc(GH(p.path))}" target="_blank" rel="noopener" class="hint">GitHub</a></li>`;
+}
+/* sheet-music viewer above the chords: the part picked with "Ver", else the first one for the chosen instrument */
+function renderViewer(ps){
+  const vis=ps.filter(viewable).sort(sortParts);
+  if(!vis.length)return"";
+  const mine=vis.filter(p=>S.part&&instrOf(p).g===S.part);
+  const cur=vis.find(p=>p.path===S.pv)||mine.find(p=>p.what==="partitura")||mine[0]||vis.find(p=>p.what==="partitura")||vis[0];
+  S.pv=cur.path;
+  const img=/^(jpe?g|png|webp)$/.test(cur.ext);
+  return `<div><h3 class="sh">${esc(t("parts"))}<span class="seg-wrap">${partSeg()}</span></h3>
+    <div class="viewer"><div class="vbar"><select id="pvsel" aria-label="${esc(t("parts"))}">${vis.map(p=>`<option value="${esc(p.path)}"${p.path===cur.path?" selected":""}>${esc(partLabel(p))}</option>`).join("")}</select>
+      <a href="${esc(cur.path)}" target="_blank" rel="noopener">${esc(t("openFull"))} ↗</a></div>
+      ${img?`<img src="${esc(cur.path)}" alt="${esc(partLabel(cur))}">`:`<iframe src="${esc(cur.path)}#view=FitH" title="${esc(partLabel(cur))}" loading="lazy"></iframe><p class="hint">${esc(t("pdfHint"))}</p>`}</div></div>`;
 }
 function renderParts(ps){
-  const seg=`<span class="seg" role="group" aria-label="${esc(t("parts"))}">${[["",t("everything")],...Object.entries(IGROUPS).map(([k,v])=>[k,LL(v)])].map(([k,l])=>`<button type="button" data-act="part" data-k="${k}" aria-pressed="${S.part===k}">${esc(l)}</button>`).join("")}</span>`;
-  const list=ps.filter(p=>inIGroup(p,S.part)).sort((a,b)=>instrOrder.indexOf(a.instrument)-instrOrder.indexOf(b.instrument)||a.what.localeCompare(b.what)||a.n.localeCompare(b.n,"es",{numeric:true}));
+  const list=ps.filter(p=>inIGroup(p,S.part)).sort(sortParts);
   const by={};for(const p of list)(by[p.instrument]=by[p.instrument]||[]).push(p);
-  const row=p=>{const view=/^(pdf|jpe?g|png|webp)$/.test(p.ext),img=/^(jpe?g|png|webp)$/.test(p.ext);
-    return `<li><span class="k">${esc(p.ext)}</span><span class="pt">${esc(LL(WHAT[p.what])||p.what)}${p.n?" "+esc(p.n):""}<small class="hint"> · ${esc(vname(p))}</small>${img?`<img src="${esc(p.path)}" alt="" loading="lazy">`:""}</span>
-      <a href="${esc(p.path)}" target="_blank" rel="noopener"${view?"":" download"}>${esc(t("openFile"))} ↗</a><a href="${esc(GH(p.path))}" target="_blank" rel="noopener" class="hint">GitHub</a></li>`};
-  return `<div><h3 class="sh">${esc(t("parts"))}</h3><div class="bar">${seg}</div>
-    ${list.length?Object.entries(by).map(([i,arr])=>`<div class="pgrp"><h4>${esc(LL(instrOf(arr[0])))}</h4><ul class="plist">${arr.map(row).join("")}</ul></div>`).join(""):`<p class="hint">${esc(t("partEmpty"))}</p>`}
+  return `<div><h3 class="sh">${esc(t("allFiles"))} (${ps.length})</h3>
+    ${list.length?Object.entries(by).map(([i,arr])=>`<div class="pgrp"><h4>${esc(LL(instrOf(arr[0])))}</h4><ul class="plist">${arr.map(p=>partRow(p,true)).join("")}</ul></div>`).join(""):`<p class="hint">${esc(t("partEmpty"))}</p>`}
     ${ps.some(p=>/^(mid|mscz|gp\d)$/.test(p.ext))?`<p class="hint">${esc(t("partHint"))}</p>`:""}</div>`;
+}
+/* Partituras tab: every song that has a part for the chosen instrument */
+function renderPartsView(){
+  const q=fold(S.pq);
+  const rows=S.songs.filter(s=>!q||fold(s.title).includes(q)).sort(sortT)
+    .map(s=>[s,S.parts.filter(p=>p.songId===s.id&&inIGroup(p,S.part)).sort(sortParts)])
+    .filter(([,ps])=>ps.length&&(!S.part||ps.some(p=>instrOf(p).g===S.part)));
+  return `<h3 class="sh">${esc(t("parts"))}</h3>
+    <div class="bar" style="margin-bottom:14px"><span class="grp"><span class="lbl">${esc(t("instrument"))}</span>${partSeg()}</span>
+    <span class="grp" style="flex:1;min-width:180px"><input type="search" id="pq" placeholder="${esc(t("search"))}" value="${esc(S.pq)}" aria-label="${esc(t("search"))}"></span></div>
+    <p class="hint">${S.part?esc(t("partsFor").replace("%n",rows.length)):esc(t("pickPart"))}</p>
+    ${rows.length?`<div class="partsongs">${rows.map(([s,ps])=>`<section><h4><button type="button" data-go="c-${esc(s.id)}">${esc(s.title)}</button>${S.versions.some(v=>v.songId===s.id)?`<span class="pill">${esc(t("hasChords"))}</span>`:""}</h4><ul class="plist">${ps.map(p=>partRow(p,false)).join("")}</ul></section>`).join("")}</div>`:`<div class="empty">${esc(t("partEmpty"))}</div>`}`;
 }
 function recCard(r,showSong){
   const tn=tunaById(r.tunaId);
@@ -682,14 +729,17 @@ document.addEventListener("click",async e=>{
   if(act==="pickA"){S.verA=id;if(S.verB===id)S.verB=null;render()}
   else if(act==="sh"){S.shift=Math.max(-11,Math.min(11,S.shift+Number(a.dataset.d)));render()}
   else if(act==="nota"){S.nota=a.dataset.k;render()}
-  else if(act==="part"){S.part=a.dataset.k;try{localStorage.setItem("cc-part",S.part)}catch(err){}render()}
+  else if(act==="part"){S.part=a.dataset.k;S.pv=null;try{localStorage.setItem("cc-part",S.part)}catch(err){}render()}
+  else if(act==="pv"){S.pv=a.dataset.p;render();const v=$(".viewer");if(v)v.scrollIntoView({behavior:"smooth",block:"start"})}
   else if(act==="embed"){const box=a.closest(".embed");const f=document.createElement("iframe");f.src=box.dataset.src;f.height=box.dataset.h;f.loading="lazy";f.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";f.title=t("play");box.replaceChildren(f)}
   else if(act==="copy"){const txt=document.getElementById(id).textContent;try{await navigator.clipboard.writeText(txt);toast(t("copied"))}catch(err){const r=document.createRange();r.selectNodeContents(document.getElementById(id));const s=getSelection();s.removeAllRanges();s.addRange(r)}}
 });
-document.addEventListener("input",e=>{if(e.target.id==="q"){S.q=e.target.value;S._qf=true;render();S._qf=false}});
+document.addEventListener("input",e=>{
+  if(e.target.id==="q"){S.q=e.target.value;S._qf="q";render();S._qf=false}
+  else if(e.target.id==="pq"){S.pq=e.target.value;S._qf="pq";render();S._qf=false}});
 document.addEventListener("change",e=>{const id=e.target.id;
   if(id==="fT"){S.fT=e.target.value;render()}else if(id==="fG"){S.fG=e.target.value;render()}else if(id==="rT"){S.rT=e.target.value;render()}
-  else if(id==="cmp"){S.verB=e.target.value||null;render()}else if(id==="align"){S.align=e.target.checked;render()}});
+  else if(id==="cmp"){S.verB=e.target.value||null;render()}else if(id==="pvsel"){S.pv=e.target.value;render()}else if(id==="align"){S.align=e.target.checked;render()}});
 $("#lang").addEventListener("click",()=>{LANG=LANG==="es"?"en":"es";try{localStorage.setItem("cc-lang",LANG)}catch(e){}document.documentElement.lang=LANG;render()});
 document.documentElement.lang=LANG;readHash();render();load();
 

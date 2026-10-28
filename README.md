@@ -1,6 +1,6 @@
 # Cancionero Común
 
-Shared songbook for tunas: every song once, with each tuna's version of it side by side. Transpose, switch between DO-RE-MI and C-D-E, and compare two versions with the chord differences highlighted.
+Shared songbook for tunas: every song once, with each tuna's version of it side by side. Transpose, switch between DO-RE-MI and C-D-E, and compare two versions with the chord differences highlighted. Each song shows its sheet music above the chords, and the *Partituras* tab lists every part for your instrument.
 
 **Site:** https://mcpechka.github.io/cancionera/
 
@@ -12,7 +12,7 @@ The site (`index.html`) is a single static page. It reads `tunas/index.json`, ea
 tunas/
   index.json            which tuna folders the site loads
   _plantilla/           template to copy for a new tuna
-  ciudad-de-luz/        Tuna Ciudad de Luz, 52 songs with chords, sheet music for 85 songs
+  ciudad-de-luz/        Tuna Ciudad de Luz, 67 songs with chords, sheet music for 85 songs
     tuna.json  historia.md  songs/  parts/  photos/
   maastricht/  medicina-navarra/  empresariales-huelva/  uaa/   reserved, still empty
 tools/
