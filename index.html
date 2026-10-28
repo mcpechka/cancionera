@@ -162,6 +162,14 @@ h3.sh{font:700 20px var(--f-display);margin:0 0 10px;display:flex;justify-conten
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:var(--r);z-index:60;font-size:14px;max-width:calc(100% - 32px)}
 .notice{font-size:14px;color:var(--muted);background:var(--sunk);border-radius:var(--r);padding:8px 12px}
 .reclist .flt{display:flex;gap:8px;flex-wrap:wrap}
+.pgrp h4{font:500 12px var(--f-body);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:12px 0 6px}
+.plist{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.plist li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;padding:8px 12px}
+.plist li+li{border-top:1px solid var(--line)}
+.plist .k{font:600 11px var(--f-mono);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:var(--sunk);border-radius:3px;padding:1px 6px}
+.plist .pt{flex:1;min-width:10em}
+.plist a{color:var(--accent)}
+.plist img{display:block;max-height:220px;margin-top:6px;border-radius:4px}
 @media (prefers-reduced-motion:no-preference){.chip,.btn{transition:border-color .15s,box-shadow .15s}}
 .code{position:relative;margin:8px 0}
 .code pre{margin:0;background:var(--sunk);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;overflow-x:auto;font:13px/1.55 var(--f-mono)}
@@ -317,7 +325,9 @@ const T={
   j3:"Pon tus canciones en songs/ en formato ChordPro (.cho) y añádelas a la lista songs de tuna.json. Melodías, tablaturas y partituras van en parts/, fotos en photos/ y una breve historia en historia.md.",
   j4:"Si la carpeta es nueva, añade su nombre a tunas/index.json. Abre un pull request.",
   jNote:"Las canciones se agrupan por título, así que la versión de tu tuna aparecerá al lado de las demás y se podrán comparar los acordes.",
-  chordpro:"Ejemplo de canción (.cho)",pending:"Pendiente: aún sin canciones",music:"Discos",noMusic:"Aún no hay discos.",noMusicB:"Cada tuna añade sus discos en tuna.json (albums) con los enlaces de Spotify y otras plataformas.",play:"Escuchar aquí",embedNote:"Al pulsar se carga el reproductor de %s (usa sus cookies).",tracks:"Canciones",onAlbum:"En disco",history:"Historia",copy:"Copiar",copied:"Copiado",files:"archivos"},
+  chordpro:"Ejemplo de canción (.cho)",pending:"Pendiente: aún sin canciones",music:"Discos",noMusic:"Aún no hay discos.",noMusicB:"Cada tuna añade sus discos en tuna.json (albums) con los enlaces de Spotify y otras plataformas.",play:"Escuchar aquí",embedNote:"Al pulsar se carga el reproductor de %s (usa sus cookies).",tracks:"Canciones",onAlbum:"En disco",history:"Historia",copy:"Copiar",copied:"Copiado",files:"archivos",
+  parts:"Partituras",partCount:"partituras",everything:"Todo",openFile:"Abrir",noChords:"Aún no hay acordes de esta canción en el cancionero, solo partituras y material.",partEmpty:"Nada para este instrumento.",
+  partHint:"MIDI, MuseScore (.mscz) y Guitar Pro (.gp5) se descargan y se abren en MuseScore."},
  en:{tag:"Shared repertoire and chords across tunas",songs:"Songs",tunas:"Tunas",recs:"Recordings",join:"Add your tuna",search:"Search songs",allT:"All tunas",allG:"All styles",back:"← Songs",
   origin:"Author",genre:"Style",key:"Key",capo:"Capo",versions:"Versions",transpose:"Transpose",notation:"Notation",orig:"Original",compare:"Compare with",none:"None",align:"Match key",
   diffNote:"Yellow: chords that differ from the first version.",noRec:"No recordings yet.",open:"Open link",src:"View file on GitHub",founded:"Founded",
@@ -328,7 +338,9 @@ const T={
   j3:"Put your songs in songs/ as ChordPro (.cho) and list them under songs in tuna.json. Melodies, tabs and sheet music go in parts/, photos in photos/ and a short history in historia.md.",
   j4:"If the folder is new, add its name to tunas/index.json. Open a pull request.",
   jNote:"Songs are grouped by title, so your tuna's version shows up next to the others and the chords can be compared.",
-  chordpro:"Example song (.cho)",pending:"Pending: no songs yet",music:"Albums",noMusic:"No albums yet.",noMusicB:"Each tuna adds its albums in tuna.json (albums) with Spotify and other platform links.",play:"Listen here",embedNote:"Clicking loads the %s player (uses its cookies).",tracks:"Tracks",onAlbum:"On album",history:"History",copy:"Copy",copied:"Copied",files:"files"}
+  chordpro:"Example song (.cho)",pending:"Pending: no songs yet",music:"Albums",noMusic:"No albums yet.",noMusicB:"Each tuna adds its albums in tuna.json (albums) with Spotify and other platform links.",play:"Listen here",embedNote:"Clicking loads the %s player (uses its cookies).",tracks:"Tracks",onAlbum:"On album",history:"History",copy:"Copy",copied:"Copied",files:"files",
+  parts:"Sheet music",partCount:"parts",everything:"All",openFile:"Open",noChords:"No chords for this song in the songbook yet, only sheet music and material.",partEmpty:"Nothing for this instrument.",
+  partHint:"MIDI, MuseScore (.mscz) and Guitar Pro (.gp5) files download and open in MuseScore."}
 };
 let LANG="es";try{LANG=localStorage.getItem("cc-lang")||"es"}catch(e){}
 const t=k=>(T[LANG]&&T[LANG][k])||T.es[k]||k;
@@ -365,7 +377,20 @@ function songKeys(title){
   return[...new Set([s,art(s),noPar,art(noPar),par].map(fold).filter(x=>x.length>2))];
 }
 
-const S={tunas:[],songs:[],versions:[],recs:[],albums:[],view:"songs",songId:null,verA:null,verB:null,shift:0,nota:"orig",align:true,q:"",fT:"",fG:"",rT:"",err:null,loaded:false};
+/* parts/<song>/<instrument>-<what>.<ext>, listed in parts/index.json (tools/parts_index.py) */
+const INSTR={bandurria1:{es:"Bandurria 1",en:"Bandurria 1",g:"bandurria"},bandurria2:{es:"Bandurria 2",en:"Bandurria 2",g:"bandurria"},bandurria3:{es:"Bandurria 3",en:"Bandurria 3",g:"bandurria"},bandurria:{es:"Bandurrias",en:"Bandurrias",g:"bandurria"},
+  laud:{es:"Laúd",en:"Laúd",g:"laud"},guitarra:{es:"Guitarra",en:"Guitar",g:"guitarra"},guitarron:{es:"Guitarrón",en:"Guitarrón",g:"bajo"},bajo:{es:"Bajo",en:"Bass",g:"bajo"},contrabajo:{es:"Contrabajo",en:"Double bass",g:"bajo"},
+  voz:{es:"Voz / coro",en:"Voice / choir",g:"voz"},cuatro:{es:"Cuatro",en:"Cuatro",g:"otros"},acordeon:{es:"Acordeón",en:"Accordion",g:"otros"},trompeta:{es:"Trompeta",en:"Trumpet",g:"otros"},
+  pandereta:{es:"Pandereta",en:"Pandereta",g:"otros"},percusion:{es:"Percusión",en:"Percussion",g:"otros"},todos:{es:"Partitura general",en:"Full score",g:"todos"}};
+const IGROUPS={bandurria:{es:"Bandurria",en:"Bandurria"},laud:{es:"Laúd",en:"Laúd"},guitarra:{es:"Guitarra",en:"Guitar"},bajo:{es:"Bajo",en:"Bass"},voz:{es:"Voz",en:"Voice"},otros:{es:"Otros",en:"Other"}};
+const WHAT={partitura:{es:"Partitura",en:"Score"},melodia:{es:"Melodía",en:"Melody"},letra:{es:"Letra y acordes",en:"Lyrics & chords"},tab:{es:"Tablatura",en:"Tab"},midi:{es:"MIDI",en:"MIDI"},musescore:{es:"MuseScore",en:"MuseScore"},scan:{es:"Escaneo",en:"Scan"}};
+const LL=o=>o?(o[LANG]||o.es):"";
+const instrOrder=Object.keys(INSTR);
+const instrOf=p=>INSTR[p.instrument]||{es:p.instrument,en:p.instrument,g:"otros"};
+const inIGroup=(p,g)=>!g||instrOf(p).g===g||instrOf(p).g==="todos";
+let PART0="";try{PART0=localStorage.getItem("cc-part")||""}catch(e){}
+
+const S={tunas:[],songs:[],versions:[],recs:[],albums:[],parts:[],view:"songs",songId:null,verA:null,verB:null,shift:0,nota:"orig",align:true,q:"",fT:"",fG:"",rT:"",err:null,loaded:false,part:PART0};
 const tunaById=id=>S.tunas.find(x=>x.id===id);
 const becaOf=id=>{const tn=tunaById(id);return BECAS[tn&&tn.beca]||(tn&&/^#[0-9a-f]{6}$/i.test(tn.beca||"")?tn.beca:"transparent")};
 const songName=id=>(S.songs.find(s=>s.id===id)||{}).title||"—";
@@ -406,6 +431,22 @@ async function loadTuna(id){
     else p=parseChordPro(raw,fb);
     if(p&&p.title&&p.text&&p.text.includes("["))addSong(p,id,f.path,f.label);
   }
+  try{
+    const idx=JSON.parse(await getText(base+"parts/index.json"));
+    for(const[folder,e]of Object.entries(idx)){
+      if(!/^[\w-]+$/.test(folder)||!e||!Array.isArray(e.files))continue;
+      const own=S.versions.find(v=>v.tunaId===id&&v.path===base+"songs/"+folder+".cho");
+      let songId=own&&own.songId;
+      if(!songId){const ks=songKeys(e.title||folder);const s=S.songs.find(x=>x.keys.some(k=>ks.includes(k)));
+        if(s)songId=s.id;
+        else{const ns={id:fold(e.title||folder).slice(0,40)||"cancion",title:e.title||folder,origin:"",genre:"",keys:ks};while(S.songs.some(x=>x.id===ns.id))ns.id+="-2";S.songs.push(ns);songId=ns.id}}
+      for(const f of e.files){
+        const m=/^([a-z0-9]+)-([a-z0-9-]+)\.([a-z0-9]+)$/.exec(f);if(!m)continue;
+        const w=m[2].replace(/-\d+$/,""),n=(/-(\d+)$/.exec(m[2])||[])[1]||"";
+        S.parts.push({songId,tunaId:id,instrument:m[1],what:w,n,ext:m[3],path:base+"parts/"+folder+"/"+f});
+      }
+    }
+  }catch(e){}
   loadAlbums(cfg,id,base);
   for(const r of [].concat(cfg.recordings||[])){
     if(!r||!/^https:\/\//i.test(r.url||""))continue;
@@ -499,7 +540,7 @@ function filteredSongs(){
   return S.songs.filter(s=>{
     if(q&&!(fold(s.title).includes(q)||fold(s.origin).includes(q)))return false;
     if(S.fG&&s.genre!==S.fG)return false;
-    if(S.fT&&!S.versions.some(v=>v.songId===s.id&&v.tunaId===S.fT))return false;
+    if(S.fT&&!S.versions.some(v=>v.songId===s.id&&v.tunaId===S.fT)&&!S.parts.some(p=>p.songId===s.id&&p.tunaId===S.fT))return false;
     return true;
   }).sort(sortT);
 }
@@ -508,16 +549,16 @@ function renderSongs(){
   const side=`<aside class="side">
     <input type="search" id="q" placeholder="${esc(t("search"))}" value="${esc(S.q)}" aria-label="${esc(t("search"))}">
     <div class="filters">
-      <select id="fT" aria-label="${esc(t("tunas"))}"><option value="">${esc(t("allT"))}</option>${S.tunas.filter(x=>S.versions.some(v=>v.tunaId===x.id)).sort(sortT).map(x=>`<option value="${esc(x.id)}"${S.fT===x.id?" selected":""}>${esc(x.name)}</option>`).join("")}</select>
+      <select id="fT" aria-label="${esc(t("tunas"))}"><option value="">${esc(t("allT"))}</option>${S.tunas.filter(x=>S.versions.some(v=>v.tunaId===x.id)||S.parts.some(p=>p.tunaId===x.id)).sort(sortT).map(x=>`<option value="${esc(x.id)}"${S.fT===x.id?" selected":""}>${esc(x.name)}</option>`).join("")}</select>
       <select id="fG" aria-label="${esc(t("genre"))}"><option value="">${esc(t("allG"))}</option>${GENRES.map(g=>`<option value="${g}"${S.fG===g?" selected":""}>${esc(g)}</option>`).join("")}</select>
     </div>
     <ul class="songlist">${list.map(s=>{
-      const vs=S.versions.filter(v=>v.songId===s.id),tids=[...new Set(vs.map(v=>v.tunaId))],nr=S.recs.filter(r=>r.songId===s.id).length;
+      const vs=S.versions.filter(v=>v.songId===s.id),tids=[...new Set(vs.map(v=>v.tunaId))],nr=S.recs.filter(r=>r.songId===s.id).length,np=S.parts.filter(p=>p.songId===s.id).length;
       return `<li><button type="button" data-go="c-${esc(s.id)}" aria-current="${S.songId===s.id}">
         <span class="t"><b>${esc(s.title)}</b><small>${esc(s.genre||"")}${s.genre&&s.origin?" · ":""}${esc(s.origin||"")}</small></span>
         <span class="dots">${tids.slice(0,5).map(id=>`<span class="dot" style="background:${becaOf(id)}"></span>`).join("")}</span>
-        <span class="count" title="${vs.length} ${esc(t("verCount"))} · ${nr} ${esc(t("recCount"))}">${vs.length}·${nr}</span></button></li>`}).join("")}</ul>
-    <p class="hint">${S.songs.length} ${esc(t("songs").toLowerCase())} · ${S.versions.length} ${esc(t("verCount"))}</p>
+        <span class="count" title="${vs.length} ${esc(t("verCount"))} · ${nr} ${esc(t("recCount"))} · ${np} ${esc(t("partCount"))}">${vs.length}·${nr}·${np}</span></button></li>`}).join("")}</ul>
+    <p class="hint">${S.songs.length} ${esc(t("songs").toLowerCase())} · ${S.versions.length} ${esc(t("verCount"))} · ${S.parts.length} ${esc(t("partCount"))}</p>
   </aside>`;
   const song=S.songs.find(s=>s.id===S.songId);
   return `<div class="layout${song?" detail":""}">${side}<section class="sheet">${song?renderSong(song):`<div class="empty"><h3>${esc(t("songs"))}</h3>${esc(t("pick"))}</div>`}</section></div>`;
@@ -531,7 +572,7 @@ function renderSong(s){
   const lab=v=>esc(vname(v))+(v.label?" · "+esc(v.label):"");
   const head=`<div><button class="btn ghost backlink" type="button" data-go="">${esc(t("back"))}</button>
     <div class="songhead"><div><h2>${esc(s.title)}</h2>
-    <div class="meta">${s.origin?`<span>${esc(t("origin"))}: ${esc(s.origin)}</span>`:""}${s.genre?`<span>${esc(t("genre"))}: ${esc(s.genre)}</span>`:""}<span>${vs.length} ${esc(t("verCount"))} · ${recs.length} ${esc(t("recCount"))}</span></div></div></div></div>`;
+    <div class="meta">${s.origin?`<span>${esc(t("origin"))}: ${esc(s.origin)}</span>`:""}${s.genre?`<span>${esc(t("genre"))}: ${esc(s.genre)}</span>`:""}<span>${vs.length} ${esc(t("verCount"))} · ${recs.length} ${esc(t("recCount"))} · ${S.parts.filter(p=>p.songId===s.id).length} ${esc(t("partCount"))}</span></div></div></div></div>`;
   const chips=vs.map(v=>`<button type="button" class="chip" data-act="pickA" data-id="${esc(v.id)}" aria-pressed="${v.id===S.verA}"><span class="beca" style="background:${becaOf(v.tunaId)}"></span>${lab(v)}${v.key?` <small>(${esc(v.key)})</small>`:""}</button>`).join("");
   const kA=keyIdx(A&&A.key),kB=keyIdx(B&&B.key);
   const bShift=B&&S.align&&kA!==null&&kB!==null?((kA-kB+18)%12)-6:0;
@@ -545,13 +586,26 @@ function renderSong(s){
     <small>${v.key?`${esc(t("key"))}: ${esc(xpose(v.key,n,S.nota))}`:""}${v.meter?` · ${esc(v.meter)}`:""}${v.capo?` · ${esc(t("capo"))} ${esc(v.capo)}`:""}</small></div>
     <div class="cp">${renderCP(v.text,n,S.nota,base,bs)}</div>
     <div class="vnotes" style="font-size:12px"><a href="${esc(GH(v.path))}" target="_blank" rel="noopener">${esc(t("src"))} ↗</a></div></article>`;
-  const verSec=`<div><h3 class="sh">${esc(t("versions"))}</h3><div class="chips" style="margin-bottom:10px">${chips}</div>${bar}
+  const verSec=!vs.length?`<p class="notice">${esc(t("noChords"))}</p>`:`<div><h3 class="sh">${esc(t("versions"))}</h3><div class="chips" style="margin-bottom:10px">${chips}</div>${bar}
     ${B?`<p class="hint">${esc(t("diffNote"))}</p>`:""}
     <div class="cols" style="--n:${B?2:1};margin-top:12px">${A?card(A,S.shift,null,0):""}${B?card(B,S.shift+bShift,A,S.shift):""}</div></div>`;
+  const ps=S.parts.filter(p=>p.songId===s.id);
+  const partSec=ps.length?renderParts(ps):"";
   const recSec=`<div><h3 class="sh">${esc(t("recs"))}</h3>${recs.length?`<div class="reclist">${recs.map(r=>recCard(r)).join("")}</div>`:`<p class="hint">${esc(t("noRec"))}</p>`}</div>`;
   const onAlb=S.albums.filter(a=>a.tracks.some(tr=>tr.songId===s.id));
   const albSec=onAlb.length?`<div><h3 class="sh">${esc(t("onAlbum"))}</h3><div class="albums">${onAlb.map(a=>albumCard(a,true)).join("")}</div></div>`:"";
-  return head+verSec+recSec+albSec;
+  return head+verSec+partSec+recSec+albSec;
+}
+function renderParts(ps){
+  const seg=`<span class="seg" role="group" aria-label="${esc(t("parts"))}">${[["",t("everything")],...Object.entries(IGROUPS).map(([k,v])=>[k,LL(v)])].map(([k,l])=>`<button type="button" data-act="part" data-k="${k}" aria-pressed="${S.part===k}">${esc(l)}</button>`).join("")}</span>`;
+  const list=ps.filter(p=>inIGroup(p,S.part)).sort((a,b)=>instrOrder.indexOf(a.instrument)-instrOrder.indexOf(b.instrument)||a.what.localeCompare(b.what)||a.n.localeCompare(b.n,"es",{numeric:true}));
+  const by={};for(const p of list)(by[p.instrument]=by[p.instrument]||[]).push(p);
+  const row=p=>{const view=/^(pdf|jpe?g|png|webp)$/.test(p.ext),img=/^(jpe?g|png|webp)$/.test(p.ext);
+    return `<li><span class="k">${esc(p.ext)}</span><span class="pt">${esc(LL(WHAT[p.what])||p.what)}${p.n?" "+esc(p.n):""}<small class="hint"> · ${esc(vname(p))}</small>${img?`<img src="${esc(p.path)}" alt="" loading="lazy">`:""}</span>
+      <a href="${esc(p.path)}" target="_blank" rel="noopener"${view?"":" download"}>${esc(t("openFile"))} ↗</a><a href="${esc(GH(p.path))}" target="_blank" rel="noopener" class="hint">GitHub</a></li>`};
+  return `<div><h3 class="sh">${esc(t("parts"))}</h3><div class="bar">${seg}</div>
+    ${list.length?Object.entries(by).map(([i,arr])=>`<div class="pgrp"><h4>${esc(LL(instrOf(arr[0])))}</h4><ul class="plist">${arr.map(row).join("")}</ul></div>`).join(""):`<p class="hint">${esc(t("partEmpty"))}</p>`}
+    ${ps.some(p=>/^(mid|mscz|gp\d)$/.test(p.ext))?`<p class="hint">${esc(t("partHint"))}</p>`:""}</div>`;
 }
 function recCard(r,showSong){
   const tn=tunaById(r.tunaId);
@@ -628,6 +682,7 @@ document.addEventListener("click",async e=>{
   if(act==="pickA"){S.verA=id;if(S.verB===id)S.verB=null;render()}
   else if(act==="sh"){S.shift=Math.max(-11,Math.min(11,S.shift+Number(a.dataset.d)));render()}
   else if(act==="nota"){S.nota=a.dataset.k;render()}
+  else if(act==="part"){S.part=a.dataset.k;try{localStorage.setItem("cc-part",S.part)}catch(err){}render()}
   else if(act==="embed"){const box=a.closest(".embed");const f=document.createElement("iframe");f.src=box.dataset.src;f.height=box.dataset.h;f.loading="lazy";f.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";f.title=t("play");box.replaceChildren(f)}
   else if(act==="copy"){const txt=document.getElementById(id).textContent;try{await navigator.clipboard.writeText(txt);toast(t("copied"))}catch(err){const r=document.createRange();r.selectNodeContents(document.getElementById(id));const s=getSelection();s.removeAllRanges();s.addRange(r)}}
 });

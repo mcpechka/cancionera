@@ -1,0 +1,119 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+3 0 obj
+<< /Type /Pages /Kids [5 0 R 7 0 R] /Count 2 >>
+endobj
+4 0 obj
+<< /Length 2637 >>
+stream
+BT /F2 13 Tf 40 806 Td (gitaar caja de musica) Tj ET
+BT /F1 9.5 Tf 11.6 TL 40 782 Td
+() '
+(La Caja de Música                                               Gitaar) '
+() '
+() '
+(Intro) '
+(        Deel A: Instrumentaal bandurria 1 en laud, 16 maten.) '
+() '
+(        Deel B: Instrumentaal, inval gitaar, 3/4.) '
+() '
+(      | G       | D     | G     | D     | G     | D     | G     | G7            |) '
+(      | 63      | 40    | 63    | 40    | 63    | 40    | 63    | 63            |) '
+() '
+() '
+(      | Am      | Cm    | D     | D7    | G     | D     | G     | B7            |) '
+(      | 53      | 53    | 40    | 50    | 63    | 40    | 63    | strijkje      |) '
+() '
+() '
+(Couplet) '
+(        Deel A: Inval zang, geen melodie-instrumenten.) '
+() '
+(      | Em      | Em    | Em    | Em    | Em    | E     | Am            | Am            |) '
+(      | 42      | 41    | 40    | 41    | 42    | 42    | 50 53 42      | strijkje      |) '
+() '
+(                | Am    | Am    | Em    | Em    | Am    | B7    | Em            | Em        ) '
+(    |) '
+(                | 50    | 53    | 42    | 52    | 50    | 52    | 42 52 63      | strijkje  ) '
+(    |) '
+(        Deel B: Zang, wel melodie-instrumenten.) '
+() '
+(      | Em      | Em    | Em    | Em    | Em    | E     | Am            | Am            |) '
+(      | 42      | 41    | 40    | 41    | 42    | 42    | 50 53 42      | strijkje      |) '
+() '
+(                | Am    | Am    | Em    | Em    | A7    | Bm7   | Em            | D7        ) '
+(    |) '
+(                | 50    | 53    | 42    | 52    | 50    | 52    | 42 52 63      | strijkje  ) '
+(    |) '
+() '
+() '
+(Refrein) '
+(        Deel A:) '
+() '
+(      | G       | D     | G     | D     | G     | D     | G     | G7    |) '
+(      | 63      | 40    | 63    | 40    | 63    | 40    | 63    | 63    |) '
+() '
+() '
+(      | Am      | Cm    | D     | D7    | G     | D     | G     | D     |) '
+(      | 53      | 53    | 40    | 50    | 63    | 40    | 63    | 40    |) '
+() '
+(        Deel B:) '
+() '
+() '
+(      | G       | D     | G     | D     | G     | F     | E         |           |) '
+(      | 63      | 40    | 63    | 40    | 63    | 61    | 60 52 64 | 60                 |) '
+() '
+() '
+(      | Am      | Cm    | D     | D7    | G     | D     | G         | B7                |) '
+(      | 53      | 53    | 40    | 50    | 63    | 40    | 63        | strijkje  |) '
+() '
+() '
+(Voor de liefhebbers) '
+() '
+(1. Lees de Am als een C6, speel de Cm als een Cm6, bijvoorbeeld zo:) '
+(        C6                              Cm6) '
+(        53 {42 32 21} {42 32 21}                53 {32 24 13} {32 24 13}) '
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 3 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 237 >>
+stream
+BT /F1 9.5 Tf 11.6 TL 40 806 Td
+(        53 {35 25 15} {35 25 15}                53 {35 24 15} {35 24 15}) '
+() '
+(2. Speel op het einde van Intro deel 2 geen G7 maar G9, bijvoorbeeld:) '
+(        G9) '
+(        {63 52 40 32 20 11}) '
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 3 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Type /Catalog /Pages 3 0 R >>
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000009 00000 n 
+0000000104 00000 n 
+0000000206 00000 n 
+0000000269 00000 n 
+0000002958 00000 n 
+0000003094 00000 n 
+0000003382 00000 n 
+0000003518 00000 n 
+trailer
+<< /Size 9 /Root 8 0 R >>
+startxref
+3567
+%%EOF

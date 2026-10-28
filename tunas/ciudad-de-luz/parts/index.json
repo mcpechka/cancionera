@@ -1,0 +1,749 @@
+{
+ "adelita": {
+  "title": "Adelita",
+  "files": [
+   "bandurria1-partitura.pdf",
+   "trompeta-partitura.pdf"
+  ]
+ },
+ "aguas": {
+  "title": "Aguas Do Dão",
+  "files": [
+   "todos-letra-2.pdf",
+   "todos-letra.pdf"
+  ]
+ },
+ "alicantina": {
+  "title": "Alicantina",
+  "files": [
+   "todos-letra-2.pdf",
+   "todos-letra.pdf"
+  ]
+ },
+ "alma_corazon_y_vida": {
+  "title": "Alma, corazon y vida",
+  "files": [
+   "guitarra-letra.pdf",
+   "laud-partitura.pdf",
+   "todos-partitura.pdf"
+  ]
+ },
+ "alma_llanera": {
+  "title": "Alma llanera",
+  "files": [
+   "todos-partitura.pdf"
+  ]
+ },
+ "amapola": {
+  "title": "Amapola",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "amor_de_mis_amores": {
+  "title": "Amor de mis amores",
+  "files": [
+   "voz-letra.pdf"
+  ]
+ },
+ "amor_eterno": {
+  "title": "Amor eterno",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "aranjuez": {
+  "title": "Aranjuez con tu amor",
+  "files": [
+   "bandurria-partitura.pdf",
+   "guitarra-letra.pdf",
+   "guitarra-partitura.pdf",
+   "laud-partitura.pdf",
+   "todos-midi.mid",
+   "voz-letra.pdf"
+  ]
+ },
+ "besame_mucho": {
+  "title": "Besame Mucho",
+  "files": [
+   "voz-letra.pdf"
+  ]
+ },
+ "beso": {
+  "title": "El Beso",
+  "files": [
+   "guitarra-partitura-2.pdf",
+   "guitarra-partitura.pdf",
+   "guitarra-partitura.png",
+   "todos-letra-2.pdf",
+   "todos-letra.pdf"
+  ]
+ },
+ "bikina": {
+  "title": "La Bikina",
+  "files": [
+   "todos-letra.pdf",
+   "todos-musescore.mscz",
+   "todos-partitura-2.pdf",
+   "todos-partitura.pdf"
+  ]
+ },
+ "boda_de_luis_alonso": {
+  "title": "La boda de Luis Alonso",
+  "files": [
+   "guitarra-partitura-2.pdf",
+   "guitarra-partitura-2.png",
+   "guitarra-partitura-3.pdf",
+   "guitarra-partitura-3.png",
+   "guitarra-partitura-4.pdf",
+   "guitarra-partitura-4.png",
+   "guitarra-partitura.pdf",
+   "guitarra-partitura.png",
+   "todos-partitura.pdf"
+  ]
+ },
+ "caja_de_musica": {
+  "title": "Caja de música",
+  "files": [
+   "bajo-partitura.pdf",
+   "bandurria1-partitura-2.pdf",
+   "bandurria1-partitura.pdf",
+   "bandurria2-partitura.pdf",
+   "guitarra-letra-2.pdf",
+   "guitarra-letra.pdf",
+   "guitarra-partitura.pdf",
+   "todos-letra-2.pdf",
+   "todos-letra-3.pdf",
+   "todos-letra.pdf",
+   "todos-midi-2.mid",
+   "todos-midi.mid",
+   "todos-partitura-2.pdf",
+   "todos-partitura-3.pdf",
+   "todos-partitura.pdf",
+   "voz-midi-2.mid",
+   "voz-midi-3.mid",
+   "voz-midi-4.mid",
+   "voz-midi.mid",
+   "voz-partitura.pdf"
+  ]
+ },
+ "calles_sin_rumbo": {
+  "title": "Calles sin rumbo",
+  "files": [
+   "todos-partitura-2.pdf",
+   "todos-partitura-3.pdf",
+   "todos-partitura.pdf"
+  ]
+ },
+ "cancion_con_todos": {
+  "title": "Canción con todos",
+  "files": [
+   "todos-letra-2.pdf",
+   "todos-letra.pdf"
+  ]
+ },
+ "cancion_del_corazon": {
+  "title": "Canción del corazón (Endecha)",
+  "files": [
+   "bandurria1-partitura.pdf",
+   "bandurria2-partitura.pdf",
+   "guitarra-partitura.pdf",
+   "laud-partitura.pdf",
+   "todos-letra-2.pdf",
+   "todos-letra.pdf",
+   "todos-musescore.mscz",
+   "voz-partitura.pdf"
+  ]
+ },
+ "candidito": {
+  "title": "Isa del Candidito",
+  "files": [
+   "todos-letra.pdf",
+   "todos-partitura.pdf"
+  ]
+ },
+ "candombe": {
+  "title": "Candombe Para José",
+  "files": [
+   "todos-letra-2.pdf",
+   "todos-letra.pdf",
+   "todos-musescore-2.mscz",
+   "todos-musescore.mscz",
+   "voz-letra.pdf"
+  ]
+ },
+ "cantar_de_emigracao": {
+  "title": "Cantar de Emigracão",
+  "files": [
+   "bandurria1-partitura.pdf",
+   "bandurria2-partitura.pdf",
+   "guitarra-letra.pdf",
+   "todos-letra-2.pdf",
+   "todos-letra.pdf",
+   "todos-midi-2.mid",
+   "todos-midi.mid"
+  ]
+ },
+ "cielito": {
+  "title": "Cielito lindo",
+  "files": [
+   "todos-partitura.pdf",
+   "trompeta-partitura.jpg"
+  ]
+ },
+ "cintas_de_mi_capa": {
+  "title": "Las cintas de mi capa",
+  "files": [
+   "todos-partitura.pdf"
+  ]
+ },
+ "cumbia": {
+  "title": "Cumbia (medley)",
+  "files": [
+   "todos-midi-2.mid",
+   "todos-midi.mid",
+   "todos-partitura.pdf"
+  ]
+ },
+ "cumpleanos_feliz": {
+  "title": "Cumpleaños feliz",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "czardas": {
+  "title": "Czardas",
+  "files": [
+   "guitarra-partitura.pdf",
+   "todos-partitura-2.pdf",
+   "todos-partitura-3.pdf",
+   "todos-partitura-4.pdf",
+   "todos-partitura.pdf"
+  ]
+ },
+ "dance_the_night_away": {
+  "title": "Dance the Night Away",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "danza_hungara_5": {
+  "title": "Danza húngara n.º 5",
+  "files": [
+   "todos-partitura.pdf"
+  ]
+ },
+ "de_vlieger": {
+  "title": "De Vlieger",
+  "files": [
+   "acordeon-partitura.pdf",
+   "bajo-partitura.pdf",
+   "bandurria1-partitura.pdf",
+   "bandurria2-partitura.pdf",
+   "laud-partitura.pdf",
+   "todos-letra.pdf",
+   "todos-midi.mid",
+   "voz-partitura.pdf"
+  ]
+ },
+ "despierta": {
+  "title": "Despierta",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "don_quijote": {
+  "title": "Don Quijote",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "dos_palomitas": {
+  "title": "Dos palomitas",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "e-10": {
+  "title": "E-10 Suite, La Ronda de Maruiqilla",
+  "files": [
+   "guitarra-partitura.jpg",
+   "todos-letra.png"
+  ]
+ },
+ "el_condor_pasa": {
+  "title": "El cóndor pasa",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "el_diablo_suelto": {
+  "title": "El diablo suelto",
+  "files": [
+   "todos-partitura.png"
+  ]
+ },
+ "el_padrino": {
+  "title": "El Padrino (vals)",
+  "files": [
+   "acordeon-partitura.pdf",
+   "guitarra-partitura-2.pdf",
+   "guitarra-partitura-3.pdf",
+   "guitarra-partitura-4.pdf",
+   "guitarra-partitura.pdf",
+   "todos-partitura-2.pdf",
+   "todos-partitura-3.pdf",
+   "todos-partitura-4.pdf",
+   "todos-partitura.pdf"
+  ]
+ },
+ "el_vagabundo": {
+  "title": "El vagabundo",
+  "files": [
+   "todos-letra-2.pdf",
+   "todos-letra.pdf",
+   "todos-musescore.mscz",
+   "todos-partitura.pdf"
+  ]
+ },
+ "estampa_cumanesa": {
+  "title": "Estampa cumanesa",
+  "files": [
+   "todos-letra.pdf",
+   "todos-midi.mid",
+   "todos-partitura-2.png",
+   "todos-partitura.pdf",
+   "todos-partitura.png"
+  ]
+ },
+ "estrellita": {
+  "title": "Estrellita del Sur",
+  "files": [
+   "todos-letra.pdf",
+   "todos-midi.mid",
+   "todos-partitura.pdf"
+  ]
+ },
+ "fonseca": {
+  "title": "Triste y sola (Fonseca)",
+  "files": [
+   "bandurria1-partitura.pdf"
+  ]
+ },
+ "granada": {
+  "title": "Granada",
+  "files": [
+   "bandurria-partitura.pdf",
+   "bandurria1-midi.mid",
+   "bandurria1-partitura.pdf",
+   "bandurria2-midi.mid",
+   "bandurria2-partitura.pdf",
+   "bandurria3-midi.mid",
+   "bandurria3-partitura.pdf",
+   "guitarra-letra.pdf",
+   "laud-partitura.pdf",
+   "todos-midi.mid",
+   "todos-musescore.mscz",
+   "todos-partitura.pdf"
+  ]
+ },
+ "guadalajara": {
+  "title": "Guadalajara",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "guantanamera": {
+  "title": "Guantanamera",
+  "files": [
+   "acordeon-partitura.pdf",
+   "bandurria-letra.pdf",
+   "bandurria-partitura.pdf",
+   "laud-partitura.pdf",
+   "todos-letra-2.pdf",
+   "todos-letra.pdf",
+   "todos-midi.mid",
+   "todos-musescore.mscz",
+   "todos-partitura-2.pdf",
+   "todos-partitura-3.pdf",
+   "todos-partitura.pdf",
+   "trompeta-partitura.jpg"
+  ]
+ },
+ "hoy_estoy_aqui": {
+  "title": "Hoy estoy aqui",
+  "files": [
+   "acordeon-partitura.pdf",
+   "bandurria1-partitura.pdf"
+  ]
+ },
+ "imagenes_de_ayer": {
+  "title": "Imágenes de ayer",
+  "files": [
+   "todos-midi.mid"
+  ]
+ },
+ "isas": {
+  "title": "Isas canarias",
+  "files": [
+   "bandurria-partitura.pdf",
+   "bandurria1-partitura.pdf",
+   "guitarra-partitura.pdf",
+   "laud-partitura-2.pdf",
+   "laud-partitura.pdf",
+   "todos-letra.pdf",
+   "todos-partitura-2.pdf",
+   "todos-partitura-3.pdf",
+   "todos-partitura-4.pdf",
+   "todos-partitura-5.pdf",
+   "todos-partitura.pdf",
+   "voz-partitura-2.pdf",
+   "voz-partitura-3.pdf",
+   "voz-partitura.pdf"
+  ]
+ },
+ "julio": {
+  "title": "La Morena De Mi Copla / Julio",
+  "files": [
+   "todos-partitura.pdf"
+  ]
+ },
+ "kaseko_medley": {
+  "title": "Kaseko medley",
+  "files": [
+   "bajo-partitura.pdf",
+   "percusion-partitura.pdf",
+   "todos-partitura-2.pdf",
+   "todos-partitura-3.pdf",
+   "todos-partitura-4.pdf",
+   "todos-partitura.pdf",
+   "voz-partitura.pdf"
+  ]
+ },
+ "la_banda": {
+  "title": "La Banda",
+  "files": [
+   "todos-letra-2.pdf",
+   "todos-letra-3.pdf",
+   "todos-letra.pdf"
+  ]
+ },
+ "la_donna_e_mobile": {
+  "title": "La donna è mobile",
+  "files": [
+   "todos-midi.mid"
+  ]
+ },
+ "luna_de_espana": {
+  "title": "Luna de España",
+  "files": [
+   "guitarra-partitura.pdf",
+   "laud-partitura.pdf",
+   "todos-letra.pdf"
+  ]
+ },
+ "madrid": {
+  "title": "Madrid",
+  "files": [
+   "guitarra-letra.pdf"
+  ]
+ },
+ "malaguena": {
+  "title": "Malagueña",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "marcha_turca": {
+  "title": "Marcha turca",
+  "files": [
+   "todos-partitura.pdf"
+  ]
+ },
+ "me_voy_pal_pueblo": {
+  "title": "Me voy pa'l pueblo",
+  "files": [
+   "bandurria-midi.mid",
+   "bandurria1-midi.mid",
+   "bandurria2-midi.mid",
+   "todos-letra.pdf",
+   "todos-midi-2.mid",
+   "todos-midi.mid",
+   "todos-partitura-2.pdf",
+   "todos-partitura.pdf",
+   "voz-midi-2.mid",
+   "voz-midi-3.mid",
+   "voz-midi-4.mid",
+   "voz-midi.mid",
+   "voz-musescore.mscz"
+  ]
+ },
+ "merceditas": {
+  "title": "Merceditas",
+  "files": [
+   "todos-letra-2.pdf",
+   "todos-letra.pdf"
+  ]
+ },
+ "mi_sueno_mejor": {
+  "title": "Mi sueño mejor",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "milagro_de_tus_ojos": {
+  "title": "El milagro de tus ojos",
+  "files": [
+   "voz-letra.pdf"
+  ]
+ },
+ "misirlou": {
+  "title": "Misirlou",
+  "files": [
+   "todos-letra.pdf",
+   "todos-midi-2.mid",
+   "todos-midi-3.mid",
+   "todos-midi-4.mid",
+   "todos-midi-5.mid",
+   "todos-midi.mid",
+   "todos-partitura.pdf",
+   "trompeta-partitura.jpg"
+  ]
+ },
+ "moliendo_cafe": {
+  "title": "Moliendo café",
+  "files": [
+   "todos-letra-2.pdf",
+   "todos-letra.pdf"
+  ]
+ },
+ "munequita_linda": {
+  "title": "Muñequita linda",
+  "files": [
+   "voz-letra.pdf"
+  ]
+ },
+ "naranjitay": {
+  "title": "Naranjitay",
+  "files": [
+   "todos-letra.pdf",
+   "todos-midi-2.mid",
+   "todos-midi.mid"
+  ]
+ },
+ "nl_medley": {
+  "title": "NL Medley",
+  "files": [
+   "todos-letra.pdf",
+   "todos-midi-2.mid",
+   "todos-midi.mid",
+   "voz-letra.pdf"
+  ]
+ },
+ "no_puede_ser": {
+  "title": "No puede ser",
+  "files": [
+   "guitarra-letra.pdf",
+   "todos-midi-2.mid",
+   "todos-midi.mid",
+   "todos-partitura.pdf",
+   "voz-letra.pdf"
+  ]
+ },
+ "nostalgias": {
+  "title": "Nostalgias",
+  "files": [
+   "bajo-letra.pdf",
+   "bandurria-partitura.pdf",
+   "todos-letra.pdf",
+   "todos-midi.mid",
+   "todos-partitura.pdf"
+  ]
+ },
+ "oh_maribel": {
+  "title": "¡Oh! Maribel",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "ojos_de_espana": {
+  "title": "Ojos de España",
+  "files": [
+   "guitarra-partitura.jpg",
+   "todos-letra-2.pdf",
+   "todos-letra.pdf",
+   "todos-letra.png"
+  ]
+ },
+ "parate": {
+  "title": "Párate",
+  "files": [
+   "guitarra-partitura.pdf",
+   "laud-partitura.pdf",
+   "todos-letra.pdf",
+   "todos-midi.mid",
+   "voz-letra.pdf"
+  ]
+ },
+ "payador": {
+  "title": "El Payador",
+  "files": [
+   "voz-letra.pdf"
+  ]
+ },
+ "perfidia": {
+  "title": "Perfidia",
+  "files": [
+   "guitarra-letra.pdf",
+   "todos-partitura-2.jpg",
+   "todos-partitura-3.jpg",
+   "todos-partitura.jpg"
+  ]
+ },
+ "piel_canela": {
+  "title": "Piel Canela",
+  "files": [
+   "bandurria1-partitura.pdf",
+   "bandurria2-partitura.pdf",
+   "todos-letra.pdf",
+   "todos-partitura-2.pdf",
+   "todos-partitura.pdf",
+   "todos-tab.gp5",
+   "voz-partitura.pdf"
+  ]
+ },
+ "poco_a_poco": {
+  "title": "Poco a Poco (Canción de Huayno)",
+  "files": [
+   "bandurria1-partitura.pdf",
+   "bandurria2-partitura.pdf",
+   "todos-letra-2.pdf",
+   "todos-letra-3.pdf",
+   "todos-letra.pdf"
+  ]
+ },
+ "porompompero": {
+  "title": "El Porompompero",
+  "files": [
+   "todos-letra-2.pdf",
+   "todos-letra.pdf"
+  ]
+ },
+ "portuguesa": {
+  "title": "Estudiantina Portugesa",
+  "files": [
+   "bandurria-partitura.jpg"
+  ]
+ },
+ "puntas": {
+  "title": "Dos Puntas",
+  "files": [
+   "todos-letra.pdf",
+   "todos-midi-2.mid",
+   "todos-midi-3.mid",
+   "todos-midi.mid"
+  ]
+ },
+ "quiero_ser_como_tu": {
+  "title": "Quiero ser como tu",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "recuerdos": {
+  "title": "Recuerdos Bolivianos",
+  "files": [
+   "guitarra-letra.pdf",
+   "todos-letra.pdf",
+   "todos-partitura.pdf"
+  ]
+ },
+ "ronda_de_las_estrellas": {
+  "title": "La ronda de las estrellas",
+  "files": [
+   "todos-partitura.pdf"
+  ]
+ },
+ "sabor_a_mi": {
+  "title": "Sabor a mí",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "samba_em_preludio": {
+  "title": "Samba em prelúdio",
+  "files": [
+   "bandurria-partitura.pdf",
+   "bandurria2-partitura.pdf",
+   "todos-letra-2.pdf",
+   "todos-letra-3.pdf",
+   "todos-letra.pdf",
+   "todos-midi.mid",
+   "todos-partitura-2.pdf",
+   "todos-partitura-3.pdf",
+   "todos-partitura.pdf",
+   "todos-tab.gp5"
+  ]
+ },
+ "torero": {
+  "title": "El Torero",
+  "files": [
+   "bandurria-partitura.pdf",
+   "laud-partitura.pdf",
+   "todos-letra.pdf",
+   "todos-midi.mid",
+   "todos-partitura.pdf",
+   "todos-tab.gp4",
+   "trompeta-partitura.pdf"
+  ]
+ },
+ "torna_a_surriento": {
+  "title": "Torna a Surriento",
+  "files": [
+   "bandurria1-partitura-2.pdf",
+   "bandurria1-partitura.pdf",
+   "bandurria2-partitura-2.pdf",
+   "bandurria2-partitura.pdf",
+   "guitarra-partitura.pdf",
+   "laud-partitura-2.pdf",
+   "laud-partitura-3.pdf",
+   "laud-partitura-4.pdf",
+   "laud-partitura.pdf",
+   "todos-letra-2.pdf",
+   "todos-letra-3.pdf",
+   "todos-letra-4.pdf",
+   "todos-letra-5.pdf",
+   "todos-letra.pdf",
+   "todos-musescore.mscz"
+  ]
+ },
+ "tres_veces_guapa": {
+  "title": "Tres veces guapa",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "una_paloma_blanca": {
+  "title": "Una paloma blanca",
+  "files": [
+   "todos-letra.pdf"
+  ]
+ },
+ "violetas_imperiales": {
+  "title": "Violetas imperiales",
+  "files": [
+   "voz-letra.pdf"
+  ]
+ },
+ "wilhelmus": {
+  "title": "Wilhelmus",
+  "files": [
+   "acordeon-partitura.pdf",
+   "bajo-partitura.pdf",
+   "bandurria1-partitura.pdf",
+   "bandurria2-partitura.pdf",
+   "guitarra-letra.pdf",
+   "laud-partitura.pdf"
+  ]
+ }
+}
